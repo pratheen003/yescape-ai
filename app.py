@@ -1,5 +1,5 @@
 import streamlit as st
-
+from utils.website_checker import analyze_website
 from backend.scoring import calculate_yescore
 from utils.pdf_parser import extract_text_from_pdf
 
@@ -14,20 +14,55 @@ st.subheader("AI Internship Scam Detection System")
 
 st.write("Analyze internship descriptions and offer letters using AI-powered trust scoring.")
 
-input_option = st.radio(
-    "Choose Input Type",
-    ["Paste Text", "Upload PDF"]
-)
+st.subheader("Choose Input Method")
+
+paste_text = st.checkbox("Paste Internship Text")
+upload_pdf = st.checkbox("Upload Offer Letter PDF")
 
 user_input = ""
 
-if input_option == "Paste Text":
+if paste_text:
+
+    text_input = st.text_area(
+        "Paste Internship Description or Offer Text"
+    )
+
+    user_input += text_input + "\n"
+
+if upload_pdf:
+
+    uploaded_file = st.file_uploader(
+        "Upload Offer Letter PDF",
+        type=["pdf"]
+    )
+
+    if uploaded_file is not None:
+
+        pdf_text = extract_text_from_pdf(uploaded_file)
+
+        user_input += pdf_text
+
+        st.subheader("Extracted PDF Text Preview")
+
+        st.text_area(
+            "PDF Content",
+            pdf_text,
+            height=200
+        )
+st.subheader("Provide Any Internship Information")
+
+website_url = st.text_input(
+    "Company Website URL"
+)
+user_input = ""
+
+if paste_text == "Paste Text":
 
     user_input = st.text_area(
         "Paste Internship Description or Offer Text"
     )
 
-elif input_option == "Upload PDF":
+elif upload_pdf == "Upload PDF":
 
     uploaded_file = st.file_uploader(
         "Upload Offer Letter PDF",
@@ -48,12 +83,23 @@ elif input_option == "Upload PDF":
 
 if st.button("Analyze Internship"):
 
-    if user_input.strip() == "":
+    if (
+    user_input.strip() == ""
+    and website_url.strip() == ""
+):
         st.warning("Please provide internship text or upload PDF.")
 
     else:
 
-        result = calculate_yescore(user_input)
+        website_results = None
+
+        if website_url.strip() != "":
+            website_results = analyze_website(website_url)
+
+        result = calculate_yescore(
+             user_input,
+            website_results
+        )
 
         st.markdown(
             f"""

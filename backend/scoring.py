@@ -1,4 +1,4 @@
-def calculate_yescore(text):
+def calculate_yescore(text, website_results=None):
 
     score = 100
     reasons = []
@@ -24,6 +24,12 @@ def calculate_yescore(text):
         if keyword in text:
             score -= penalty
             reasons.append(f"Detected suspicious keyword: '{keyword}'")
+    if website_results:
+
+        score -= website_results["score_penalty"]
+
+        for penalty in website_results["penalties"]:
+            reasons.append(penalty)
 
     if score >= 80:
         status = "SAFE"
