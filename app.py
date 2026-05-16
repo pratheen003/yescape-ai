@@ -1,119 +1,216 @@
 import streamlit as st
-from utils.website_checker import analyze_website
-from backend.scoring import calculate_yescore
-from utils.pdf_parser import extract_text_from_pdf
+import base64
+
+# ---------------- PAGE CONFIG ----------------
 
 st.set_page_config(
     page_title="YESCAPE AI",
-    page_icon="🛡️",
-    layout="centered"
+    page_icon="🛡",
+    layout="wide",
+    initial_sidebar_state="collapsed"
 )
 
-st.title("🛡️ YESCAPE AI")
-st.subheader("AI Internship Scam Detection System")
+# ---------------- LOAD BACKGROUND IMAGE ----------------
 
-st.write("Analyze internship descriptions and offer letters using AI-powered trust scoring.")
+def get_base64(file):
+    with open(file, "rb") as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
 
-st.subheader("Choose Input Method")
+bg = get_base64("assets/bg.jpg")
 
-paste_text = st.checkbox("Paste Internship Text")
-upload_pdf = st.checkbox("Upload Offer Letter PDF")
+# ---------------- CSS ----------------
 
-user_input = ""
+st.markdown(f"""
+<style>
 
-if paste_text:
+#MainMenu {{
+visibility:hidden;
+}}
 
-    text_input = st.text_area(
-        "Paste Internship Description or Offer Text"
-    )
+footer {{
+visibility:hidden;
+}}
 
-    user_input += text_input + "\n"
+header {{
+visibility:hidden;
+}}
 
-if upload_pdf:
+[data-testid="stSidebar"]{{
+display:none;
+}}
 
-    uploaded_file = st.file_uploader(
-        "Upload Offer Letter PDF",
-        type=["pdf"]
-    )
+/* Main background */
 
-    if uploaded_file is not None:
+.stApp{{
 
-        pdf_text = extract_text_from_pdf(uploaded_file)
+background:
+linear-gradient(
+rgba(0,0,0,.82),
+rgba(0,0,0,.90)
+),
 
-        user_input += pdf_text
+url("data:image/jpg;base64,{bg}");
 
-        st.subheader("Extracted PDF Text Preview")
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
 
-        st.text_area(
-            "PDF Content",
-            pdf_text,
-            height=200
-        )
-st.subheader("Provide Any Internship Information")
+overflow:hidden;
+}}
 
-website_url = st.text_input(
-    "Company Website URL"
-)
-user_input = ""
+/* Bottom neon wave */
 
-if paste_text == "Paste Text":
+.stApp:after{{
 
-    user_input = st.text_area(
-        "Paste Internship Description or Offer Text"
-    )
+content:"";
 
-elif upload_pdf == "Upload PDF":
+position:fixed;
 
-    uploaded_file = st.file_uploader(
-        "Upload Offer Letter PDF",
-        type=["pdf"]
-    )
+bottom:-120px;
 
-    if uploaded_file is not None:
+left:-10%;
 
-        user_input = extract_text_from_pdf(uploaded_file)
+width:120%;
 
-        st.subheader("Extracted Text Preview")
+height:320px;
 
-        st.text_area(
-            "PDF Content",
-            user_input,
-            height=200
-        )
+background:
+radial-gradient(
+circle,
+rgba(0,255,140,.45),
+transparent 70%
+);
 
-if st.button("Analyze Internship"):
+filter:blur(75px);
 
-    if (
-    user_input.strip() == ""
-    and website_url.strip() == ""
-):
-        st.warning("Please provide internship text or upload PDF.")
+z-index:-1;
+}}
 
-    else:
+/* Hero section */
 
-        website_results = None
+.hero{{
 
-        if website_url.strip() != "":
-            website_results = analyze_website(website_url)
+margin-top:120px;
 
-        result = calculate_yescore(
-             user_input,
-            website_results
-        )
+text-align:center;
+}}
 
-        st.markdown(
-            f"""
-            ## YEScore: :{result['color']}[{result['score']}/100]
-            ### Status: :{result['color']}[{result['status']}]
-            """
-        )
+/* Logo */
 
-        st.subheader("Detection Reasons")
+.logo{{
 
-        if result["reasons"]:
+font-size:65px;
 
-            for reason in result["reasons"]:
-                st.write(f"⚠️ {reason}")
+font-weight:800;
 
-        else:
-            st.success("No major scam signals detected.")
+color:#1dd66f;
+
+}}
+
+/* Heading */
+
+.title{{
+
+margin-top:60px;
+
+font-size:58px;
+
+font-weight:800;
+
+line-height:1.3;
+
+color:white;
+
+max-width:1000px;
+
+margin-left:auto;
+
+margin-right:auto;
+}}
+
+/* Description */
+
+.subtitle{{
+
+margin-top:25px;
+
+font-size:22px;
+
+color:#c4c4c4;
+}}
+
+/* Button */
+
+.stButton>button{{
+
+background:#18c37e;
+
+color:white;
+
+font-size:22px;
+
+padding:16px 55px;
+
+border-radius:999px;
+
+border:none;
+
+margin-top:50px;
+
+font-weight:700;
+
+box-shadow:
+0px 0px 35px rgba(0,255,150,.45);
+
+transition:.3s;
+}}
+
+.stButton>button:hover{{
+
+transform:scale(1.04);
+
+background:#22e88f;
+}}
+
+.stButton{{
+text-align:center;
+}}
+
+</style>
+""", unsafe_allow_html=True)
+
+# ---------------- UI ----------------
+
+st.markdown("""
+
+<div class='hero'>
+
+<div class='logo'>
+
+🛡 YES-cape
+
+</div>
+
+<div class='title'>
+
+Trust Your Internship Offer.<br>
+Scan for Peace of Mind.
+
+</div>
+
+<div class='subtitle'>
+
+AI-powered internship verification and scam detection platform.
+
+</div>
+
+</div>
+
+""", unsafe_allow_html=True)
+
+col1, col2, col3 = st.columns([1,2,1])
+
+with col2:
+    if st.button("START VERIFICATION"):
+        st.switch_page("pages/1_Verification.py")
