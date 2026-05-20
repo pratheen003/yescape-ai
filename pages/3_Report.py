@@ -211,10 +211,25 @@ border-left:4px solid #ef4444;
 
 # -------- SCORE CARD --------
 
-score = 100
-status="SAFE"
-trust="HIGH TRUST"
-verdict="AI found strong legitimacy indicators."
+score=st.session_state.get(
+"score",
+50
+)
+
+status=st.session_state.get(
+"status",
+"UNKNOWN"
+)
+
+trust=st.session_state.get(
+"trust",
+"MEDIUM"
+)
+
+verdict=st.session_state.get(
+"verdict",
+"No analysis"
+)
 
 score_color="#1de782"
 glow="rgba(29,231,130,.45)"
@@ -357,57 +372,182 @@ AI Verdict
 
 """,unsafe_allow_html=True)
 
+# -------------------------
+# GET USER INPUT DATA
+# -------------------------
 
+user_text = st.session_state.get(
+    "text",
+    ""
+)
+
+url_text = st.session_state.get(
+    "url",
+    ""
+)
+
+pdf_name = st.session_state.get(
+    "pdf_name",
+    ""
+)
+
+# -------------------------
+# DETECT SIGNALS
+# -------------------------
+
+positive=[]
+negative=[]
+
+text_data = (user_text + " " + url_text).lower()
+
+# Positive signals
+
+if "company" in text_data:
+    positive.append(
+    "Professional contact structure detected"
+    )
+
+if "internship" in text_data:
+    positive.append(
+    "Detailed internship description found"
+    )
+
+if "@" in text_data:
+    positive.append(
+    "Email/contact information available"
+    )
+
+
+# Risk signals
+
+risky_words=[
+"registration fee",
+"payment",
+"urgent",
+"immediate joining",
+"training fee",
+"deposit"
+]
+
+for word in risky_words:
+
+    if word in text_data:
+
+        negative.append(
+        f"Detected risky terms: {word}"
+        )
+
+
+if "urgent" in text_data:
+
+    negative.append(
+    "Urgency wording: urgent"
+    )
+
+
+# fallback
+
+if len(positive)==0:
+
+    positive.append(
+    "No major positive indicators found"
+    )
+
+
+if len(negative)==0:
+
+    negative.append(
+    "No risk indicators detected"
+    )
 
 # -------------------------
 # SIGNALS
 # -------------------------
-st.markdown("""
 
-<br>
+positives = st.session_state.get("positives", [])
+negatives = st.session_state.get("negatives", [])
 
-""",unsafe_allow_html=True)
+if len(positives)==0:
+    positives=["No major positive indicators found"]
+
+if len(negatives)==0:
+    negatives=["No risk indicators detected"]
+
+
+positive_html=""
+
+for item in positives:
+
+    positive_html += f"""
+    <p style="
+    color:white;
+    font-size:18px;
+    margin:12px 0;
+    ">
+    ✔ {item}
+    </p>
+    """
+
+
+negative_html=""
+
+for item in negatives:
+
+    negative_html += f"""
+    <p style="
+    color:white;
+    font-size:18px;
+    margin:12px 0;
+    ">
+    ⚠ {item}
+    </p>
+    """
+
+
 col1,col2=st.columns(2)
+
 
 with col1:
 
-    st.markdown("""
+    st.markdown(f"""
+    <div class="subcard green">
 
-<div class='subcard green'>
+    <div style="
+    font-size:30px;
+    font-weight:700;
+    margin-bottom:25px;
+    ">
 
-### 🟢 Positive Signals
+    🟢 Green Flags
 
-✔ Company website detected
+    </div>
 
-✔ Professional language
+    {positive_html}
 
-✔ Structured formatting
-
-</div>
-
-""",unsafe_allow_html=True)
+    </div>
+    """,unsafe_allow_html=True)
 
 
 
 with col2:
 
-    st.markdown("""
+    st.markdown(f"""
+    <div class="subcard red">
 
-<div class='subcard red'>
+    <div style="
+    font-size:30px;
+    font-weight:700;
+    margin-bottom:25px;
+    ">
 
-### 🔴 Red Flags
+    🔴 Red Flags
 
-⚠ Urgency wording
+    </div>
 
-⚠ Missing recruiter details
+    {negative_html}
 
-⚠ Compensation mismatch
-
-</div>
-
-""",unsafe_allow_html=True)
-
-
+    </div>
+    """,unsafe_allow_html=True)
 # -------------------------
 # AI ANALYSIS
 # -------------------------

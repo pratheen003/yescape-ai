@@ -1,5 +1,6 @@
 import streamlit as st
 import time
+from ai.yes_engine import analyze_offer
 
 st.set_page_config(
     page_title="Research",
@@ -216,6 +217,12 @@ AI researching your internship evidence
 
 # ---------- input chips ----------
 
+st.markdown("""
+
+<br>
+
+""",unsafe_allow_html=True)
+
 if st.session_state.get("url",""):
 
     st.markdown("""
@@ -312,6 +319,78 @@ Estimated analysis time:
 unsafe_allow_html=True)
 
 time.sleep(1)
+
+from ai.score_engine import calculate_score
+from ai.verdict_generator import get_verdict
+
+
+text=st.session_state.get(
+"user_input",""
+)
+
+url=st.session_state.get(
+"url",""
+)
+
+
+result=calculate_score(
+text,
+url
+)
+
+
+verdict=get_verdict(
+result["score"]
+)
+
+
+st.session_state.score=(
+result["score"]
+)
+
+st.session_state.positives=(
+result["positives"]
+)
+
+st.session_state.negatives=(
+result["negatives"]
+)
+
+st.session_state.status=(
+verdict["status"]
+)
+
+st.session_state.trust=(
+verdict["trust"]
+)
+
+st.session_state.verdict=(
+verdict["verdict"]
+)
+
+result=analyze_offer(
+
+st.session_state.get(
+"text",""
+),
+
+st.session_state.get(
+"url",""
+)
+
+)
+
+st.session_state.score=result["score"]
+
+st.session_state.status=result["status"]
+
+st.session_state.trust=result["trust"]
+
+st.session_state.verdict=result["verdict"]
+
+st.session_state.positives=result["positives"]
+
+st.session_state.negatives=result["negatives"]
 
 st.switch_page(
 "pages/3_Report.py"
