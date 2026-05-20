@@ -1,5 +1,5 @@
 import re
-
+from ai.domain_checker import analyze_domain
 
 def analyze_offer(text,url=""):
 
@@ -96,6 +96,19 @@ def analyze_offer(text,url=""):
         )
 
         score+=10
+
+
+        domain=analyze_domain(url)
+
+        score+=domain["score"]
+
+        positives.extend(
+        domain["positives"]
+        )
+
+        negatives.extend(
+        domain["negatives"]
+        )
 
 
 
