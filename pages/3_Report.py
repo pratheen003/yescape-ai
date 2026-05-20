@@ -104,9 +104,23 @@ else:
 
 
 
-confidence=min(
-95,
-score+10
+positive_count=len(
+st.session_state.get(
+"positives",[]
+)
+)
+
+negative_count=len(
+st.session_state.get(
+"negatives",[]
+)
+)
+
+confidence=70 + (positive_count*5) - (negative_count*4)
+
+confidence=max(
+50,
+min(confidence,98)
 )
 
 
