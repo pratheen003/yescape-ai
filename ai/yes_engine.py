@@ -1,6 +1,7 @@
 import re
 from ai.domain_checker import analyze_domain
 from ai.company_checker import analyze_company
+from ai.urgency_detector import analyze_urgency
 
 def analyze_offer(text,url=""):
 
@@ -121,6 +122,18 @@ def analyze_offer(text,url=""):
 
         negatives.extend(
         company["negatives"]
+        )
+
+        urgency=analyze_urgency(text)
+
+        score+=urgency["score"]
+
+        positives.extend(
+        urgency["positives"]
+        )
+
+        negatives.extend(
+        urgency["negatives"]
         )
 
 
