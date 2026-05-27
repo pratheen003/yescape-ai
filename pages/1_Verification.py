@@ -372,6 +372,20 @@ if st.button(
 
             st.session_state.pdf_name=uploaded_file.name
 
+            pdf_text=extract_text_from_pdf(
+                uploaded_file
+            )
+
+            st.session_state.text=(
+                st.session_state.get(
+                "text",""
+                )
+                +
+                "\n"
+                +
+                pdf_text
+            )
+
         else:
 
             st.session_state.pdf_name=""
