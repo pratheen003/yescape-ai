@@ -840,6 +840,21 @@ Final verdict:
 
 )
 
+st.markdown("### Company Research")
+
+st.success(
+f"""
+Company:
+{st.session_state.get("company","Unknown")}
+
+Status:
+{st.session_state.get("company_status","Unknown")}
+
+Domain Reputation:
+{st.session_state.get("domain_reputation","Unknown")}
+"""
+)
+
 #-------------------------
 
 #BUTTONS

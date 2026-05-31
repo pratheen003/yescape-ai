@@ -1,6 +1,7 @@
 import streamlit as st
 import time
 from ai.yes_engine import analyze_offer
+from ai.research_summary import generate_research_summary
 
 st.set_page_config(
     page_title="Research",
@@ -332,6 +333,11 @@ url=st.session_state.get(
 "url",""
 )
 
+research = generate_research_summary(
+    text,
+    url
+)
+
 
 result=calculate_score(
 text,
@@ -366,6 +372,18 @@ verdict["trust"]
 
 st.session_state.verdict=(
 verdict["verdict"]
+)
+
+st.session_state.company=(
+research["company"]
+)
+
+st.session_state.company_status=(
+research["company_status"]
+)
+
+st.session_state.domain_reputation=(
+research["domain_reputation"]
 )
 
 result=analyze_offer(
