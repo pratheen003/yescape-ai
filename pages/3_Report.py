@@ -155,18 +155,26 @@ st.session_state.get(
 )
 )
 
-
 negative_count=len(
 st.session_state.get(
 "negatives",[]
 )
 )
 
+base_score=score
 
-confidence=70 + (positive_count*5) - (negative_count*4)
+confidence=base_score
+
+confidence+=(
+positive_count*2
+)
+
+confidence-=(
+negative_count*1
+)
 
 confidence=max(
-50,
+60,
 min(confidence,98)
 )
 
@@ -811,10 +819,25 @@ confidence/100
 
 )
 
+if confidence >= 90:
+
+    confidence_text="Very High"
+
+elif confidence >= 75:
+
+    confidence_text="High"
+
+elif confidence >= 60:
+
+    confidence_text="Moderate"
+
+else:
+
+    confidence_text="Low"
+
+
 st.caption(
-
-f"AI Confidence: {confidence}%"
-
+f"AI Confidence: {confidence}% ({confidence_text})"
 )
 
 st.info(
