@@ -51,7 +51,17 @@ def analyze_offer(text,url=""):
 
     "certificate fee":30,
 
-    "payment required":25
+    "payment required":25,
+
+    "whatsapp only":20,
+
+    "dm for details":15,
+
+    "earn money fast":20,
+
+    "guaranteed placement":20,
+
+    "work from home and earn":15
 
     }
 
@@ -88,6 +98,23 @@ def analyze_offer(text,url=""):
 
         score+=5
 
+    if "internship" in text:
+
+        positives.append(
+        "Internship role clearly mentioned"
+        )
+
+        score+=5
+
+
+    if "company" in text:
+
+        positives.append(
+        "Company information referenced"
+        )
+
+        score+=5
+
 
     phone_pattern=r"\+91|[0-9]{10}"
 
@@ -113,17 +140,6 @@ def analyze_offer(text,url=""):
         score+=10
 
 
-        domain=analyze_domain(url)
-
-        score+=domain["score"]
-
-        positives.extend(
-        domain["positives"]
-        )
-
-        negatives.extend(
-        domain["negatives"]
-        )
 
         company=analyze_company(text)
 
