@@ -2,6 +2,7 @@ import streamlit as st
 from utils.report_generator import generate_report
 from ai.verdict_generator import get_verdict
 
+
 st.set_page_config(
 
 page_title="YESScore Report",
@@ -870,19 +871,15 @@ with c1:
     ):
 
         generate_report(
-
-        "yescape_report.pdf",
-
-        score,
-
-        status,
-
-        verdict,
-
-        positives,
-
-        negatives
-
+            "yescape_report.pdf",
+            score,
+            status,
+            verdict,
+            positives,
+            negatives,
+            st.session_state.get("company","Unknown"),
+            st.session_state.get("company_status","Unknown"),
+            st.session_state.get("domain_reputation","Unknown")
         )
 
 

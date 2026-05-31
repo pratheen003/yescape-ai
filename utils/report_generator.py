@@ -1,115 +1,182 @@
 from reportlab.platypus import (
     SimpleDocTemplate,
     Spacer,
-    Paragraph
+    Paragraph,
+    PageBreak
 )
 
-from reportlab.lib import colors
-from reportlab.lib import styles
 from reportlab.lib.styles import getSampleStyleSheet
 
 
 def generate_report(
-filename,
-score,
-status,
-verdict,
-positives,
-negatives
+    filename,
+    score,
+    status,
+    verdict,
+    positives,
+    negatives,
+    company="Unknown",
+    company_status="Unknown",
+    domain_reputation="Unknown"
 ):
 
-    doc=SimpleDocTemplate(
-    filename
-    )
+    doc = SimpleDocTemplate(filename)
 
-    stylesheets=getSampleStyleSheet()
+    styles = getSampleStyleSheet()
 
-    story=[]
+    story = []
 
-    title=Paragraph(
-    "YES-cape AI Verification Report",
-    stylesheets["Title"]
-    )
-
-    story.append(title)
+    # -------------------------
+    # TITLE
+    # -------------------------
 
     story.append(
-    Spacer(1,20)
-    )
-
-
-    story.append(
-
-    Paragraph(
-    f"<b>YES Score:</b> {score}/100",
-    stylesheets["Heading2"]
-    )
+        Paragraph(
+            "YESCAPE AI VERIFICATION REPORT",
+            styles["Title"]
+        )
     )
 
     story.append(
-
-    Paragraph(
-    f"<b>Status:</b> {status}",
-    stylesheets["Heading3"]
-    )
+        Spacer(1, 20)
     )
 
+    # -------------------------
+    # SCORE SUMMARY
+    # -------------------------
 
     story.append(
-
-    Paragraph(
-    f"<b>AI Verdict:</b> {verdict}",
-    stylesheets["BodyText"]
-    )
+        Paragraph(
+            "Trust Summary",
+            styles["Heading1"]
+        )
     )
 
     story.append(
-    Spacer(1,20)
+        Paragraph(
+            f"<b>YES Score:</b> {score}/100",
+            styles["BodyText"]
+        )
     )
-
 
     story.append(
-
-    Paragraph(
-    "Positive Signals",
-    stylesheets["Heading2"]
+        Paragraph(
+            f"<b>Status:</b> {status}",
+            styles["BodyText"]
+        )
     )
+
+    story.append(
+        Paragraph(
+            f"<b>AI Verdict:</b> {verdict}",
+            styles["BodyText"]
+        )
+    )
+
+    story.append(
+        Spacer(1, 20)
+    )
+
+    # -------------------------
+    # COMPANY RESEARCH
+    # -------------------------
+
+    story.append(
+        Paragraph(
+            "Company Research",
+            styles["Heading1"]
+        )
+    )
+
+    story.append(
+        Paragraph(
+            f"<b>Company:</b> {company}",
+            styles["BodyText"]
+        )
+    )
+
+    story.append(
+        Paragraph(
+            f"<b>Status:</b> {company_status}",
+            styles["BodyText"]
+        )
+    )
+
+    story.append(
+        Paragraph(
+            f"<b>Domain Reputation:</b> {domain_reputation}",
+            styles["BodyText"]
+        )
+    )
+
+    story.append(
+        Spacer(1, 20)
+    )
+
+    # -------------------------
+    # POSITIVE SIGNALS
+    # -------------------------
+
+    story.append(
+        Paragraph(
+            "Green Flags",
+            styles["Heading1"]
+        )
     )
 
     for item in positives:
 
         story.append(
+            Paragraph(
+                f"✓ {item}",
+                styles["BodyText"]
+            )
+        )
 
+    story.append(
+        Spacer(1, 20)
+    )
+
+    # -------------------------
+    # NEGATIVE SIGNALS
+    # -------------------------
+
+    story.append(
         Paragraph(
-        f"✔ {item}",
-        stylesheets["BodyText"]
+            "Red Flags",
+            styles["Heading1"]
         )
-        )
-
-
-    story.append(
-    Spacer(1,20)
     )
-
-
-    story.append(
-
-    Paragraph(
-    "Risk Signals",
-    stylesheets["Heading2"]
-    )
-    )
-
 
     for item in negatives:
 
         story.append(
+            Paragraph(
+                f"⚠ {item}",
+                styles["BodyText"]
+            )
+        )
 
+    story.append(
+        Spacer(1, 20)
+    )
+
+    # -------------------------
+    # FINAL VERDICT
+    # -------------------------
+
+    story.append(
         Paragraph(
-        f"⚠ {item}",
-        stylesheets["BodyText"]
+            "Final Recommendation",
+            styles["Heading1"]
         )
-        )
+    )
 
+    story.append(
+        Paragraph(
+            verdict,
+            styles["BodyText"]
+        )
+    )
 
     doc.build(story)
