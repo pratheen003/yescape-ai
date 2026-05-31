@@ -1,6 +1,9 @@
 import streamlit as st
 from utils.pdf_parser import extract_text_from_pdf
 
+if "scan_history" not in st.session_state:
+    st.session_state.scan_history=[]
+
 st.set_page_config(
     page_title="Verification",
     page_icon="🛡",
@@ -368,6 +371,7 @@ if st.button(
 
         st.session_state.text=text
 
+
         if uploaded_file:
 
             st.session_state.pdf_name=uploaded_file.name
@@ -377,23 +381,191 @@ if st.button(
             )
 
             st.session_state.text=(
+
                 st.session_state.get(
                 "text",""
                 )
+
                 +
+
                 "\n"
+
                 +
+
                 pdf_text
+
             )
 
         else:
 
             st.session_state.pdf_name=""
 
+
+        # -------------------------
+        # SAVE SCAN HISTORY
+        # -------------------------
+
+        preview=""
+
+        if url.strip()!="":
+
+            preview=url.strip()
+
+        elif text.strip()!="":
+
+            preview=text.strip()[:60]
+
+        elif uploaded_file:
+
+            preview=uploaded_file.name
+
+        else:
+
+            preview="Internship Scan"
+
+
+        preview=preview.replace("*","")
+
+
+        new_scan={
+
+            "title":preview,
+            "status":"SAFE"
+
+        }
+
+
+        already_exists=False
+
+        for item in st.session_state.scan_history:
+
+            existing_title = item.get(
+                "title",
+                item.get(
+                    "text",
+                    ""
+                )
+            )
+
+            if existing_title == preview:
+
+                already_exists=True
+                break
+
+
+        if not already_exists:
+
+            st.session_state.scan_history.insert(
+                0,
+                new_scan
+            )
+
+
+        st.session_state.scan_history=(
+            st.session_state.scan_history[:5]
+        )
+
         st.switch_page(
             "pages/2_Research.py"
         )
-st.markdown(
-"</div>",
-unsafe_allow_html=True
+
+# -------------------------
+# RECENT SCANS
+# -------------------------
+
+st.markdown("""
+
+<div style="
+font-size:22px;
+font-weight:700;
+margin-top:40px;
+margin-bottom:18px;
+color:white;
+">
+🕘 Recent Scans
+</div>
+
+""", unsafe_allow_html=True)
+
+
+history = st.session_state.get(
+    "scan_history",
+    []
 )
+
+# latest first
+history = history[::-1]
+
+
+for item in history[:5]:
+
+    # safe title detection
+
+    if "title" in item and item["title"].strip()!="":
+
+        title=item["title"]
+
+    elif "text" in item and item["text"].strip()!="":
+
+        title=item["text"][:60]
+
+    else:
+
+        continue
+
+
+    score=item.get(
+        "score",
+        70
+    )
+
+    # DOT COLOR
+
+    if score >= 80:
+
+        dot = "#19f589"
+
+    elif score >= 60:
+
+        dot = "#facc15"
+
+    else:
+
+        dot = "#ff4b5c"
+
+
+    st.markdown(f"""
+
+<div style="
+padding:16px 18px;
+border-radius:18px;
+background:rgba(255,255,255,.03);
+border:1px solid rgba(255,255,255,.06);
+margin-bottom:14px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+">
+
+<div style="
+color:white;
+font-size:16px;
+font-weight:500;
+overflow:hidden;
+">
+{title}
+</div>
+
+<div style="
+width:14px;
+height:14px;
+border-radius:50%;
+background:{dot};
+box-shadow:0 0 14px {dot};
+flex-shrink:0;
+">
+</div>
+
+</div>
+
+""", unsafe_allow_html=True)

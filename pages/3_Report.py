@@ -1,4 +1,6 @@
 import streamlit as st
+from utils.report_generator import generate_report
+from ai.verdict_generator import get_verdict
 
 st.set_page_config(
 
@@ -81,34 +83,70 @@ min(score,100)
 
 #-------------------------
 
-if score>=80:
+result = get_verdict(
+    score,
+    st.session_state.get("positives", []),
+    st.session_state.get("negatives", [])
+)
 
-    trust="SAFE"
+status = result["status"]
+
+trustline = result["trust"]
+
+verdict = result["verdict"]
+
+
+if status == "SAFE":
+
     glow="#1de782"
-    verdict="AI found strong legitimacy indicators."
-    trustline="HIGH TRUST"
 
-elif score>=60:
+elif status == "CAUTION":
 
-    trust="CAUTION"
     glow="#facc15"
-    verdict="Mixed signals detected."
-    trustline="MEDIUM TRUST"
 
-elif score>=40:
+elif status == "RISKY":
 
-    trust="RISKY"
     glow="#ff8c00"
-    verdict="Multiple suspicious indicators detected."
-    trustline="LOW TRUST"
 
 else:
 
-    trust="SCAM ALERT"
     glow="#ef4444"
-    verdict="High probability of internship scam."
-    trustline="VERY LOW TRUST"
 
+
+trust = status
+
+# -------------------------
+# SAVE SCAN HISTORY
+# -------------------------
+
+if "scan_history" not in st.session_state:
+
+    st.session_state["scan_history"]=[]
+
+
+current_scan={
+
+    "status":trust,
+
+    "score":score,
+
+    "verdict":verdict
+
+}
+
+
+history=st.session_state["scan_history"]
+
+
+if len(history)==0 or history[0]!=current_scan:
+
+    history.insert(
+        0,
+        current_scan
+    )
+
+
+st.session_state["scan_history"]=history[:5]
 
 positive_count=len(
 st.session_state.get(
@@ -131,11 +169,8 @@ confidence=max(
 min(confidence,98)
 )
 
-# -------------------------
-# STATUS FIX
-# -------------------------
 
-status=trust
+
 
 #-------------------------
 
@@ -324,6 +359,7 @@ border-left:4px solid #ef4444;
 }}
   
 
+
   
 </style>""",unsafe_allow_html=True)
 
@@ -458,20 +494,16 @@ border-radius:50%;
 }}
 
 .score-side h1{{
-
-font-size:64px;
-margin:0;
-
-color:{meter_color};
-
+    font-size:72px;
+    margin:0;
+    white-space:nowrap;
+    color:{meter_color};
 }}
 
 .score-side h2{{
-
-margin:0;
-
-color:{meter_color};
-
+    margin-top:20px;
+    margin-bottom:10px;
+    color:{meter_color};
 }}
 
 .score-side p{{
@@ -818,11 +850,46 @@ c1,c2=st.columns(2)
 
 with c1:
 
-    st.button(
+    if st.button(
+    "📄 Generate Report"
+    ):
 
-    "📄 Download Report"
+        generate_report(
 
-    )
+        "yescape_report.pdf",
+
+        score,
+
+        status,
+
+        verdict,
+
+        positives,
+
+        negatives
+
+        )
+
+
+        with open(
+        "yescape_report.pdf",
+        "rb"
+        ) as file:
+
+            st.download_button(
+
+            label=
+            "⬇ Download PDF",
+
+            data=file,
+
+            file_name=
+            "YEScape_Report.pdf",
+
+            mime=
+            "application/pdf"
+
+            )
 
 with c2:
 

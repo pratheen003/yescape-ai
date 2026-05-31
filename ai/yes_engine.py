@@ -2,6 +2,7 @@ import re
 from ai.domain_checker import analyze_domain
 from ai.company_checker import analyze_company
 from ai.urgency_detector import analyze_urgency
+from ai.research_engine import analyze_domain
 
 def analyze_offer(text,url=""):
 
@@ -12,6 +13,18 @@ def analyze_offer(text,url=""):
     positives=[]
 
     negatives=[]
+
+    domain = analyze_domain(url)
+
+    score += domain["score"]
+
+    positives.extend(
+        domain["positives"]
+    )
+
+    negatives.extend(
+        domain["negatives"]
+    )
 
 
     # -------------------

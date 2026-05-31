@@ -392,6 +392,42 @@ st.session_state.positives=result["positives"]
 
 st.session_state.negatives=result["negatives"]
 
+if "history" not in st.session_state:
+
+    st.session_state.history=[]
+
+
+history_item={
+
+"score":result["score"],
+
+"status":result["status"],
+
+"verdict":result["verdict"],
+
+"url":st.session_state.get(
+"url",
+""
+),
+
+"pdf":st.session_state.get(
+"pdf_name",
+""
+)
+
+}
+
+
+st.session_state.history.insert(
+0,
+history_item
+)
+
+
+st.session_state.history=(
+st.session_state.history[:5]
+)
+
 st.switch_page(
 "pages/3_Report.py"
 )
