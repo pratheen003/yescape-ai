@@ -6,6 +6,7 @@ from reportlab.platypus import (
 )
 
 from reportlab.lib.styles import getSampleStyleSheet
+from datetime import datetime
 
 
 def generate_report(
@@ -15,6 +16,7 @@ def generate_report(
     verdict,
     positives,
     negatives,
+    confidence,
     company="Unknown",
     company_status="Unknown",
     domain_reputation="Unknown"
@@ -38,6 +40,13 @@ def generate_report(
     )
 
     story.append(
+        Paragraph(
+            f"Generated: {datetime.now().strftime('%d %b %Y | %I:%M %p')}",
+            styles["BodyText"]
+        )
+    )
+
+    story.append(
         Spacer(1, 20)
     )
 
@@ -54,14 +63,12 @@ def generate_report(
 
     story.append(
         Paragraph(
-            f"<b>YES Score:</b> {score}/100",
-            styles["BodyText"]
-        )
-    )
-
-    story.append(
-        Paragraph(
-            f"<b>Status:</b> {status}",
+            f"""
+            <b>YES Score:</b> {score}/100<br/>
+            <b>Status:</b> {status}<br/>
+            <b>Positive Signals:</b> {len(positives)}<br/>
+            <b>Negative Signals:</b> {len(negatives)}
+            """,
             styles["BodyText"]
         )
     )
@@ -69,6 +76,13 @@ def generate_report(
     story.append(
         Paragraph(
             f"<b>AI Verdict:</b> {verdict}",
+            styles["BodyText"]
+        )
+    )
+
+    story.append(
+        Paragraph(
+            f"<b>AI Confidence:</b> {confidence}%",
             styles["BodyText"]
         )
     )
@@ -123,6 +137,9 @@ def generate_report(
             styles["Heading1"]
         )
     )
+
+    positives = list(dict.fromkeys(positives))
+    negatives = list(dict.fromkeys(negatives))
 
     for item in positives:
 

@@ -194,14 +194,13 @@ st.markdown("""
 
 <div class='title'>
 
-Trust Your Internship Offer.<br>
-Scan for Peace of Mind.
+Scan the Offer. Skip the Scam.
 
 </div>
 
 <div class='subtitle'>
 
-AI-powered internship verification and scam detection platform.
+One-Click AI analysis for a safer career start.
 
 </div>
 

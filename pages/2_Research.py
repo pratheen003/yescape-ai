@@ -27,6 +27,10 @@ linear-gradient(
 #02050c
 );
 }
+            
+a.anchor-link{
+display:none !important;
+}
 
 /* main card */
 
@@ -84,11 +88,20 @@ font-size:18px;
 
 .icon{
 
-font-size:70px;
+font-size:55px;
 
-width:110px;
+width:120px;
 
-height:110px;
+height:120px;
+
+background:
+linear-gradient(
+145deg,
+rgba(29,231,130,.15),
+rgba(20,198,109,.05)
+);
+
+backdrop-filter:blur(10px);
 
 margin:auto;
 
@@ -200,15 +213,16 @@ st.markdown("""
 <div class='hero'>
 
 <div class='icon'>
-🔎
+🔍
 </div>
 
 <h1>
-Verification in Progress
+YESCAPE Investigation Engine
 </h1>
 
 <p>
-AI researching your internship evidence
+AI is validating company trust,
+offer legitimacy and scam indicators
 </p>
 
 </div>
@@ -240,7 +254,10 @@ if st.session_state.get("pdf_name",""):
     </div>
     """,unsafe_allow_html=True)
 
-if st.session_state.get("text",""):
+if st.session_state.get(
+    "manual_text",
+    False
+):
 
     st.markdown("""
     <div class='chip'>
@@ -248,48 +265,55 @@ if st.session_state.get("text",""):
     </div>
     """,unsafe_allow_html=True)
 
-
 # -------- Dynamic Steps --------
 
 st.markdown(
-"<div class='step done'>✅ [DONE] Upload and input validation</div>",
+"""
+<div class='step done'>
+✅ Input validation completed
+</div>
+""",
 unsafe_allow_html=True
 )
 
 if st.session_state.get("pdf_name",""):
 
     st.markdown(
-    "<div class='step done'>✅ [DONE] Offer Letter text extraction (OCR)</div>",
+    """
+    <div class='step done'>
+    ✅ Offer letter successfully parsed
+    </div>
+    """,
     unsafe_allow_html=True
     )
 
 if st.session_state.get("url",""):
 
     st.markdown(
-    "<div class='step done'>✅ [DONE] Company domain lookup and age verification</div>",
+    """
+    <div class='step done'>
+    ✅ Company website identified
+    </div>
+    """,
     unsafe_allow_html=True
     )
 
 st.markdown(
 """
 <div class='step progress'>
-🟡 [IN PROGRESS] Analyzing offer terms for advance fee language...
+🟡 Scam pattern detection running...
 </div>
 
 <div class='step progress'>
-🟡 [IN PROGRESS] Sentiment and urgency analysis...
+🟡 Trust score calculation running...
 </div>
 
 <div class='step pending'>
-⚪ [PENDING] Cross referencing scam databases...
+⚪ Cross referencing scam databases...
 </div>
 
 <div class='step pending'>
-⚪ [PENDING] Salary benchmarking...
-</div>
-
-<div class='step pending'>
-⚪ [PENDING] Generating final YESScore...
+⚪ Final YES Score generation
 </div>
 """,
 unsafe_allow_html=True
@@ -297,6 +321,11 @@ unsafe_allow_html=True
 
 # progress bar INSIDE card
 
+st.markdown("""
+
+<br>
+
+""",unsafe_allow_html=True)
 
 bar=st.progress(0)
 
@@ -309,17 +338,50 @@ for i in range(100):
     )
 
 st.markdown("""
+<div style="
+padding:18px;
+border-radius:18px;
+background:rgba(255,255,255,.03);
+border:1px solid rgba(0,255,150,.08);
+margin-top:20px;
+margin-bottom:20px;
+">
+
+<div style="
+font-size:18px;
+font-weight:600;
+color:white;
+margin-bottom:10px;
+">
+AI Investigation Summary
+</div>
+
+<div style="color:#a4a8b2;">
+• Company legitimacy checks<br>
+• Domain trust validation<br>
+• Scam phrase detection<br>
+• Urgency analysis<br>
+• YES Score generation
+</div>
+
+</div>
+""",unsafe_allow_html=True)
+
+
+st.markdown("""
 <div style='
 color:#a3a3a3;
 margin-top:10px;
 '>
-Estimated analysis time:
-&lt;45 sec
+AI Confidence Engine Active
+
+Estimated completion:
+10-20 seconds
 </div>
 """,
 unsafe_allow_html=True)
 
-time.sleep(1)
+time.sleep(1.5)
 
 from ai.score_engine import calculate_score
 from ai.verdict_generator import get_verdict

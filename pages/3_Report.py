@@ -1,7 +1,9 @@
 import streamlit as st
 from utils.report_generator import generate_report
 from ai.verdict_generator import get_verdict
+from datetime import datetime
 
+scan_time = datetime.now().strftime("%d %b %Y | %I:%M %p")
 
 st.set_page_config(
 
@@ -14,6 +16,8 @@ layout="centered",
 initial_sidebar_state="collapsed"
 
 )
+
+st.caption(f"Scan Time: {scan_time}")
 
 #-------------------------
 
@@ -199,7 +203,9 @@ footer{{visibility:hidden;}}
   
 header{{visibility:hidden;}}
   
-
+a.anchor-link{{
+display:none !important;
+}}
   
 .stApp{{
   
@@ -208,7 +214,7 @@ background:
 linear-gradient(
   
 180deg,
-  
+    
 #080c14,
   
 #050811
@@ -233,7 +239,7 @@ background:
   
 rgba(15,20,30,.95);
   
-
+transition: all .3s ease;
   
 border:1px solid rgba(
   
@@ -347,11 +353,15 @@ rgba(255,255,255,.03);
   
 min-height:220px;
   
-
+transition:.3s ease;
   
 }}
   
+.subcard:hover{{
 
+transform:translateY(-6px);
+
+}}
   
 .green{{
   
@@ -367,10 +377,51 @@ border-left:4px solid #ef4444;
   
 }}
   
+.trust-card:hover{{
+
+transform:translateY(-6px);
+
+box-shadow:
+0 0 40px {glow};
+
+}}
+
+.card:hover{{
+
+transform:translateY(-6px);
+
+box-shadow:
+0 0 40px {glow};
+
+}}
 
 
   
 </style>""",unsafe_allow_html=True)
+
+st.markdown("""
+<div style="
+text-align:center;
+margin-bottom:20px;
+">
+
+<h1 style="
+color:white;
+font-size:38px;
+margin-bottom:5px;
+">
+🛡 YESScore Analysis Report
+</h1>
+
+<p style="
+color:#9aa4b2;
+font-size:16px;
+">
+AI Internship Trust Verification
+</p>
+
+</div>
+""", unsafe_allow_html=True)
 
 # -------------------------
 # SCORE CARD
@@ -397,8 +448,12 @@ else:
     glow="rgba(255,75,92,.65)"
 
 
-degree=(score/100)*180
+degree = int((score / 100) * 180)
 
+filled_degree = (score / 100) * 180
+remaining_degree = 180 - filled_degree
+
+meter_angle = (score / 100) * 180
 
 st.markdown(f"""
 
@@ -406,13 +461,15 @@ st.markdown(f"""
 
 .trust-card{{
 
-display:flex;
+display:grid;
+
+grid-template-columns:320px 1fr;
+
+gap:40px;
 
 align-items:center;
 
-justify-content:space-between;
-
-padding:30px;
+padding:35px;
 
 border-radius:30px;
 
@@ -425,80 +482,247 @@ border:1px solid rgba(255,255,255,.08);
 box-shadow:
 0 0 35px {glow};
 
+transition: all .3s ease;
+
 }}
 
-.meter{{
+.score-side{{
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+justify-content:center;
+
+text-align:center;
+
+}}
+
+.gauge{{
 
 position:relative;
 
-width:170px;
+width:220px;
 
-height:85px;
+height:110px;
 
 overflow:hidden;
 
+margin-bottom:20px;
+
 }}
 
-.meter:before{{
-
-content:"";
+.gauge-label-left{{
 
 position:absolute;
 
-width:170px;
-height:170px;
+left:-15px;
+
+top:95px;
+
+color:#9aa4b2;
+
+font-size:14px;
+
+}}
+
+.gauge-label-right{{
+
+position:absolute;
+
+right:-20px;
+
+top:95px;
+
+color:#9aa4b2;
+
+font-size:14px;
+
+}}
+
+.gauge-bg{{
+
+position:absolute;
+
+width:220px;
+
+height:220px;
 
 border-radius:50%;
 
-border:14px solid #1b2433;
+border:16px solid #1b2433;
 
 box-sizing:border-box;
 
 }}
 
-.meter-fill{{
+.gauge-zero{{
 
 position:absolute;
 
-width:170px;
-height:170px;
+left:-5px;
 
-border-radius:50%;
+top:95px;
 
-border:14px solid {meter_color};
+color:#8b95a7;
 
-box-sizing:border-box;
-
-clip-path:
-inset(
-0 0 50% 0
-);
-
-transform:
-rotate({degree}deg);
-
-transform-origin:center;
-
-box-shadow:
-0 0 25px {glow};
-
-transition:1s;
+font-size:14px;
 
 }}
 
-.meter-inner{{
+.gauge-hundred{{
 
 position:absolute;
 
-top:14px;
-left:14px;
+right:-15px;
 
-width:142px;
-height:142px;
+top:95px;
+
+color:#8b95a7;
+
+font-size:14px;
+
+}}
+
+.gauge-cover{{
+
+position:absolute;
+
+top:16px;
+
+left:16px;
+
+width:188px;
+
+height:188px;
 
 background:#07111f;
 
 border-radius:50%;
+
+}}
+
+.needle{{
+
+position:absolute;
+
+width:90px;
+
+height:4px;
+
+background:{meter_color};
+
+top:108px;
+
+left:110px;
+
+transform-origin:left center;
+
+transform:rotate({degree-180}deg);
+
+box-shadow:0 0 12px {meter_color};
+
+}}
+
+.center-dot{{
+
+position:absolute;
+
+width:14px;
+
+height:14px;
+
+border-radius:50%;
+
+background:{meter_color};
+
+top:103px;
+
+left:103px;
+
+box-shadow:0 0 10px {meter_color};
+
+}}
+
+.gauge-wrapper{{
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+justify-content:center;
+
+}}
+
+.gauge-svg{{
+
+width:240px;
+
+height:140px;
+
+overflow:visible;
+
+}}
+
+.score-number{{
+
+font-size:72px;
+
+font-weight:800;
+
+color:{meter_color};
+
+line-height:1;
+
+margin-top:-10px;
+
+}}
+
+.score-status{{
+
+display:inline-block;
+
+padding:8px 18px;
+
+border-radius:999px;
+
+background:rgba(250,204,21,.15);
+
+border:1px solid {meter_color};
+
+font-size:22px;
+
+font-weight:700;
+
+color:{meter_color};
+
+}}
+
+.score-number{{
+
+font-size:72px;
+
+font-weight:800;
+
+color:{meter_color};
+
+line-height:1;
+
+}}
+
+.score-status{{
+
+font-size:30px;
+
+font-weight:700;
+
+color:{meter_color};
+
+letter-spacing:1px;
 
 }}
 
@@ -521,43 +745,63 @@ color:#9aa4b2;
 
 }}
 
+.verdict-box h3{{
+
+font-size:24px;
+
+margin-bottom:20px;
+
+color:white;
+
+}}
+
+.verdict-box p{{
+
+font-size:18px;
+
+line-height:1.8;
+
+color:#e4e7eb;
+
+}}
+
 </style>
 
 
 
 <div class="trust-card">
 
-
-<div class="meter">
-
-<div class="meter-fill">
-</div>
-
-<div class="meter-inner">
-</div>
-
-</div>
-
-
-
 <div class="score-side">
 
-<h1>
-{score}/100
-</h1>
+<div class="gauge">
 
-<h2>
-{status}
-</h2>
+<div class="gauge-zero">0</div>
+<div class="gauge-hundred">100</div>
 
-<p>
-{trust}
-</p>
+<div class="gauge-label-left">0</div>
+<div class="gauge-label-right">100</div>
+
+<div class="gauge-bg"></div>
+
+<div class="gauge-cover"></div>
+
+<div class="needle"></div>
+
+<div class="center-dot"></div>
 
 </div>
 
+<div class="score-number">
+{score}/100
+</div>
 
-<div>
+<div class="score-status">
+{status}
+</div>
+
+</div>
+
+<div class="verdict-box">
 
 <h3>
 AI Verdict
@@ -566,6 +810,8 @@ AI Verdict
 <p>
 {verdict}
 </p>
+
+
 
 </div>
 
@@ -894,16 +1140,17 @@ with c1:
     ):
 
         generate_report(
-            "yescape_report.pdf",
-            score,
-            status,
-            verdict,
-            positives,
-            negatives,
-            st.session_state.get("company","Unknown"),
-            st.session_state.get("company_status","Unknown"),
-            st.session_state.get("domain_reputation","Unknown")
-        )
+        "yescape_report.pdf",
+        score,
+        status,
+        verdict,
+        positives,
+        negatives,
+        confidence,
+        st.session_state.get("company","Unknown"),
+        st.session_state.get("company_status","Unknown"),
+        st.session_state.get("domain_reputation","Unknown")
+    )
 
 
         with open(

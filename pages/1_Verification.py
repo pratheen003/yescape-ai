@@ -66,6 +66,39 @@ font-size:18px;
 
 margin-bottom:30px;
 }
+            
+.status-pill{
+
+width:240px;
+
+margin:auto;
+
+margin-top:18px;
+
+margin-bottom:25px;
+
+padding:10px 18px;
+
+text-align:center;
+
+font-size:15px;
+
+font-weight:600;
+
+color:#19f589;
+
+background:rgba(25,245,137,.08);
+
+border:1px solid rgba(25,245,137,.18);
+
+border-radius:999px;
+
+box-shadow:
+0 0 18px rgba(
+25,245,137,.08
+);
+
+}
 
 /* floating card */
 
@@ -134,19 +167,32 @@ box-shadow:
 
 .stCheckbox{
 
-background:#131824;
+background:
+rgba(255,255,255,.03);
 
-padding:12px;
+padding:16px;
 
-border-radius:16px;
+border-radius:20px;
 
-border:1px solid rgba(
-255,255,255,.06
+border:
+1px solid rgba(
+255,255,255,.08
 );
+
+text-align:center;
 
 transition:.3s;
 
-text-align:center;
+min-height:72px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+backdrop-filter:blur(12px);
+
 }
 
 .stCheckbox:hover{
@@ -154,14 +200,14 @@ text-align:center;
 transform:
 translateY(-4px);
 
+border:
+1px solid #19f589;
+
 box-shadow:
 
-0 0 20px rgba(
-0,255,150,.18
+0 0 25px rgba(
+25,245,137,.18
 );
-
-border:
-1px solid #18d96b;
 
 }
 
@@ -171,18 +217,18 @@ border:
 
 background:
 linear-gradient(
-90deg,
-#18d96b,
-#14c464
+135deg,
+rgba(25,245,137,.15),
+rgba(25,245,137,.05)
 );
 
-color:white;
-
-border:none;
+border:
+1px solid #19f589;
 
 box-shadow:
-0 0 20px rgba(
-0,255,150,.4
+
+0 0 25px rgba(
+25,245,137,.25
 );
 
 }
@@ -253,13 +299,16 @@ scale(1.02);
 st.markdown("""
 
 <div class='main-title'>
-Trust Your Internship Offer.
-<br>
-Scan for Peace of Mind.
+Start Your Verification
 </div>
 
 <div class='sub-title'>
-AI powered internship verification and scam detection platform
+Upload internship evidence and let
+YEScape perform a complete trust analysis.
+</div>
+
+<div class='status-pill'>
+🟢 AI Verification Ready
 </div>
 
 """,unsafe_allow_html=True)
@@ -296,6 +345,7 @@ with col3:
 
 url=""
 text=""
+manual_text=False
 pdf_text=""
 uploaded_file=None
 
@@ -328,6 +378,8 @@ if add_pdf:
 # ---------- TEXT ----------
 
 if add_text:
+
+    manual_text=True
 
     text=st.text_area(
         "Paste Internship Text"
@@ -465,6 +517,8 @@ if st.button(
             st.session_state.scan_history[:5]
         )
 
+        st.session_state.manual_text = manual_text
+
         st.switch_page(
             "pages/2_Research.py"
         )
@@ -482,7 +536,7 @@ margin-top:40px;
 margin-bottom:18px;
 color:white;
 ">
-🕘 Recent Scans
+🕘 Recent Activity
 </div>
 
 """, unsafe_allow_html=True)
@@ -537,7 +591,10 @@ for item in history[:5]:
     st.markdown(f"""
 
 <div style="
-padding:16px 18px;
+padding:18px 20px;
+box-shadow:
+0 0 18px rgba(
+255,255,255,.02);
 border-radius:18px;
 background:rgba(255,255,255,.03);
 border:1px solid rgba(255,255,255,.06);
