@@ -200,6 +200,19 @@ color:#facc15;
 color:#c4c4d8;
 
 }
+            
+
+@media (max-width:768px){
+
+.research-card{
+    padding:20px;
+}
+
+.research-icon{
+    font-size:24px;
+}
+
+}
 
 </style>
 """,unsafe_allow_html=True)

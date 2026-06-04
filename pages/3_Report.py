@@ -2,8 +2,11 @@ import streamlit as st
 from utils.report_generator import generate_report
 from ai.verdict_generator import get_verdict
 from datetime import datetime
+import pytz
 
-scan_time = datetime.now().strftime("%d %b %Y | %I:%M %p")
+india = pytz.timezone("Asia/Kolkata")
+
+scan_time = datetime.now(india)
 
 st.set_page_config(
 
@@ -17,7 +20,11 @@ initial_sidebar_state="collapsed"
 
 )
 
-st.caption(f"Scan Time: {scan_time}")
+st.caption(
+    scan_time.strftime(
+        "Scan Time: %d %b %Y | %I:%M %p"
+    )
+)
 
 #-------------------------
 
@@ -765,6 +772,35 @@ color:#e4e7eb;
 
 }}
 
+
+@media (max-width:768px){{
+
+.trust-card{{
+
+grid-template-columns:1fr;
+
+gap:20px;
+
+padding:20px;
+
+}}
+
+.verdict-box{{
+
+width:100%;
+
+text-align:center;
+
+}}
+
+.score-side{{
+
+margin-bottom:10px;
+
+}}
+
+}}
+
 </style>
 
 
@@ -777,9 +813,6 @@ color:#e4e7eb;
 
 <div class="gauge-zero">0</div>
 <div class="gauge-hundred">100</div>
-
-<div class="gauge-label-left">0</div>
-<div class="gauge-label-right">100</div>
 
 <div class="gauge-bg"></div>
 
