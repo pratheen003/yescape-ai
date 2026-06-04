@@ -2,9 +2,6 @@ import streamlit as st
 from utils.report_generator import generate_report
 from ai.verdict_generator import get_verdict
 from datetime import datetime
-import pytz
-
-india = pytz.timezone("Asia/Kolkata")
 
 scan_time = datetime.now(india)
 
