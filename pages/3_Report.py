@@ -1,9 +1,9 @@
 import streamlit as st
 from utils.report_generator import generate_report
 from ai.verdict_generator import get_verdict
-from datetime import datetime
+from datetime import datetime, timedelta
 
-scan_time = datetime.now()
+scan_time = datetime.utcnow() + timedelta(hours=5, minutes=30)
 
 st.set_page_config(
 
@@ -19,7 +19,7 @@ initial_sidebar_state="collapsed"
 
 st.caption(
     scan_time.strftime(
-        "Scan Time: %d %b %Y | %I:%M %p"
+        "Scan Time: %d %b %Y | %I:%M %p IST"
     )
 )
 
