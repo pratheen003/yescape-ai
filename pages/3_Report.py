@@ -3,7 +3,7 @@ from utils.report_generator import generate_report
 from ai.verdict_generator import get_verdict
 from datetime import datetime
 
-scan_time = datetime.now(india)
+scan_time = datetime.now()
 
 st.set_page_config(
 
