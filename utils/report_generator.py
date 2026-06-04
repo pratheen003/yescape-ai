@@ -6,7 +6,9 @@ from reportlab.platypus import (
 )
 
 from reportlab.lib.styles import getSampleStyleSheet
-from datetime import datetime , timedelta
+from datetime import datetime, timedelta
+
+ist_time = datetime.utcnow() + timedelta(hours=5, minutes=30)
 
 
 def generate_report(
@@ -41,7 +43,7 @@ def generate_report(
 
     story.append(
         Paragraph(
-            f"Generated: {datetime.utcnow() + timedelta(hours=5, minutes=30).strftime('%d %b %Y | %I:%M %p IST')}",
+            f"Generated: {ist_time.strftime('%d %b %Y | %I:%M %p IST')}",
             styles["BodyText"]
         )
     )
