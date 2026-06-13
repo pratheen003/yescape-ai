@@ -18,10 +18,14 @@ def generate_report(
     verdict,
     positives,
     negatives,
-    confidence,
+    confidence_data,
+    trust_data,
+    reasoning,
     company="Unknown",
     company_status="Unknown",
-    domain_reputation="Unknown"
+    domain_reputation="Unknown",
+    domain_age=None,
+    https_status=False
 ):
 
     doc = SimpleDocTemplate(filename)
@@ -84,7 +88,60 @@ def generate_report(
 
     story.append(
         Paragraph(
-            f"<b>AI Confidence:</b> {confidence}%",
+            f"<b>AI Confidence:</b> {confidence_data['confidence']}%",
+            styles["BodyText"]
+        )
+    )
+
+    story.append(
+        Paragraph(
+            f"<b>Evidence Count:</b> {confidence_data['evidence_count']}",
+            styles["BodyText"]
+        )
+    )
+
+    story.append(
+        Paragraph(
+            f"<b>Explanation:</b> {confidence_data['explanation']}",
+            styles["BodyText"]
+        )
+    )
+
+    story.append(
+        Paragraph(
+            "<b>Trust Breakdown</b>",
+            styles["Heading2"]
+        )
+    )
+
+    story.append(
+        Paragraph(
+            f"""
+            Company Trust: {trust_data.get('company_trust','N/A')}<br/>
+            Recruiter Trust: {trust_data.get('recruiter_trust','N/A')}<br/>
+            Website Trust: {trust_data.get('website_trust','N/A')}<br/>
+            Language Trust: {trust_data.get('language_trust','N/A')}<br/>
+            Context Trust: {trust_data.get('context_trust','N/A')}<br/>
+            Overall Trust: {trust_data.get('overall_trust','N/A')}
+            """,
+            styles["BodyText"]
+        )
+    )
+
+    story.append(
+        Spacer(1, 10)
+    )
+
+    story.append(
+        Paragraph(
+            "<b>AI Reasoning</b>",
+            styles["Heading2"]
+        )
+    )
+
+    story.append(
+        Paragraph(
+            reasoning.replace("\n", "<br/>"),
             styles["BodyText"]
         )
     )
@@ -96,6 +153,22 @@ def generate_report(
     # -------------------------
     # COMPANY RESEARCH
     # -------------------------
+
+    if domain_age:
+
+        years = f"{round(domain_age / 365, 1)} Years"
+
+        https_text = (
+            "Enabled"
+            if https_status
+            else "Not Enabled"
+        )
+
+    else:
+
+        years = "Not Available"
+
+        https_text = "Not Applicable"
 
     story.append(
         Paragraph(
@@ -121,6 +194,20 @@ def generate_report(
     story.append(
         Paragraph(
             f"<b>Domain Reputation:</b> {domain_reputation}",
+            styles["BodyText"]
+        )
+    )
+
+    story.append(
+        Paragraph(
+            f"<b>Domain Age:</b> {years} ",
+            styles["BodyText"]
+        )
+    )
+
+    story.append(
+        Paragraph(
+            f"<b>HTTPS:</b> {https_text}",
             styles["BodyText"]
         )
     )

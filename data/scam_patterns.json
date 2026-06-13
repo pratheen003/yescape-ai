@@ -1,0 +1,32 @@
+{
+  "registration_fee": [
+    "registration fee",
+    "pay registration fee",
+    "processing fee"
+  ],
+
+  "certificate_fee": [
+    "certificate fee",
+    "pay for certificate",
+    "training certificate payment"
+  ],
+
+  "guaranteed_job": [
+    "guaranteed internship",
+    "guaranteed placement",
+    "100% placement"
+  ],
+
+  "instant_joining": [
+    "join immediately",
+    "urgent joining",
+    "today only",
+    "limited slots"
+  ],
+
+  "advance_payment": [
+    "pay now",
+    "advance payment",
+    "complete payment first"
+  ]
+}

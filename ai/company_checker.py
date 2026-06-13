@@ -1,22 +1,33 @@
-KNOWN_COMPANIES=[
+KNOWN_COMPANIES = {
 
-"google",
-"microsoft",
-"amazon",
-"tcs",
-"infosys",
-"wipro",
-"zoho",
-"accenture",
-"ibm",
-"openai"
+    "google": "google.com",
 
-]
+    "microsoft": "microsoft.com",
+
+    "amazon": "amazon.com",
+
+    "infosys": "infosys.com",
+
+    "tcs": "tcs.com",
+
+    "wipro": "wipro.com",
+
+    "accenture": "accenture.com",
+
+    "zoho": "zoho.com",
+
+    "ibm": "ibm.com",
+
+    "cognizant": "cognizant.com",
+
+    "hcl": "hcltech.com"
+
+}
 
 
-def analyze_company(text):
+def analyze_company(text, url):
 
-    text=text.lower()
+    data = (text + " " + url).lower()
 
     score=0
 
@@ -24,15 +35,21 @@ def analyze_company(text):
 
     negatives=[]
 
+    detected_company = None
+    company_domain = None
 
     found=False
 
 
     for company in KNOWN_COMPANIES:
 
-        if company in text:
+        if company in data:
 
             found=True
+
+            company_domain = KNOWN_COMPANIES[company]
+
+            detected_company = company
 
             score+=15
 
@@ -48,12 +65,16 @@ def analyze_company(text):
         )
 
 
-    return{
+    return {
 
-    "score":score,
+    "company": detected_company.title() if found else None,
 
-    "positives":positives,
+    "company_domain": company_domain,
 
-    "negatives":negatives
+    "score": score,
 
-    }
+    "positives": positives,
+
+    "negatives": negatives
+
+}

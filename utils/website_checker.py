@@ -6,6 +6,7 @@ import requests
 def analyze_website(url):
 
     results = {
+        "positives": [],
         "domain_age_days": None,
         "https": False,
         "suspicious_email": False,
@@ -17,7 +18,13 @@ def analyze_website(url):
 
         # HTTPS Check
         if url.startswith("https://"):
+
             results["https"] = True
+
+            results["positives"].append(
+                "Secure HTTPS website"
+            )
+
         else:
             results["penalties"].append("Website is not using HTTPS")
             results["score_penalty"] += 10
@@ -46,6 +53,12 @@ def analyze_website(url):
 
             results["domain_age_days"] = age
 
+            if age > 365:
+
+                results["positives"].append(
+                    "Domain active for more than 1 year"
+                )
+
             if age < 180:
                 results["penalties"].append(
                     "Domain is less than 6 months old"
@@ -54,6 +67,12 @@ def analyze_website(url):
 
         # Website Reachability Check
         response = requests.get(url, timeout=5)
+
+        if response.status_code == 200:
+
+            results["positives"].append(
+                "Website is reachable"
+            )
 
         if response.status_code != 200:
             results["penalties"].append(

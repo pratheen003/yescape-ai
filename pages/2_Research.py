@@ -2,6 +2,7 @@ import streamlit as st
 import time
 from ai.yes_engine import analyze_offer
 from ai.research_summary import generate_research_summary
+from utils.website_checker import analyze_website
 
 st.set_page_config(
     page_title="Research",
@@ -344,7 +345,7 @@ bar=st.progress(0)
 
 for i in range(100):
 
-    time.sleep(.03)
+    time.sleep(.01)
 
     bar.progress(
         i+1
@@ -394,8 +395,6 @@ Estimated completion:
 """,
 unsafe_allow_html=True)
 
-time.sleep(1.5)
-
 from ai.score_engine import calculate_score
 from ai.verdict_generator import get_verdict
 
@@ -413,41 +412,6 @@ research = generate_research_summary(
     url
 )
 
-
-result=calculate_score(
-text,
-url
-)
-
-
-verdict=get_verdict(
-result["score"]
-)
-
-
-st.session_state.score=(
-result["score"]
-)
-
-st.session_state.positives=(
-result["positives"]
-)
-
-st.session_state.negatives=(
-result["negatives"]
-)
-
-st.session_state.status=(
-verdict["status"]
-)
-
-st.session_state.trust=(
-verdict["trust"]
-)
-
-st.session_state.verdict=(
-verdict["verdict"]
-)
 
 st.session_state.company=(
 research["company"]
@@ -471,6 +435,26 @@ st.session_state.get(
 "url",""
 )
 
+)
+
+st.session_state.reasoning = (
+    result["reasoning"]
+)
+
+st.session_state.confidence_data = (
+    result["confidence_data"]
+)
+
+st.session_state.trust_data = (
+    result["trust_data"]
+)
+
+st.session_state.domain_age = (
+    result["domain_age"]
+)
+
+st.session_state.https_status = (
+    result["https_status"]
 )
 
 st.session_state.score=result["score"]
