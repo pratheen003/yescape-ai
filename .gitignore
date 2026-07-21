@@ -2,3 +2,22 @@ venv/
 .env
 __pycache__/
 *.pyc
+
+
+# Dataset Files
+YESCAPE-Version2/datasets/base_datasets/
+
+YESCAPE-Version2/datasets/processed/
+
+YESCAPE-Version2/datasets/benchmark_dataset/
+
+# Model Files
+*.pkl
+*.npz
+
+# Python
+__pycache__/
+*.pyc
+
+# Jupyter Checkpoints
+.ipynb_checkpoints/
