@@ -101,3 +101,53 @@ HTTPS Trust Score
 Status
 
 Phase 3.2.5 Completed
+
+---
+
+## Google Safe Browsing Module
+
+Purpose
+
+Verify whether a website has been reported by Google as malicious.
+
+Threat Categories
+
+- Malware
+- Phishing
+- Social Engineering
+- Unwanted Software
+
+Output
+
+Safe Browsing Score
+
+0–100
+
+Status
+
+Phase 3.2.6 Completed
+
+---
+
+## Domain Trust Fusion
+
+Purpose
+
+Combine all Domain Intelligence modules into one score.
+
+Signals
+
+- WHOIS
+- DNS
+- HTTPS
+- Google Safe Browsing
+
+Output
+
+Domain Trust Score
+
+0–100
+
+Status
+
+Phase 3.2.7 Completed

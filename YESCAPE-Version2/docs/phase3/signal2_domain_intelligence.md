@@ -329,3 +329,99 @@ Maximum Score
 Maximum HTTPS Trust Score
 
 100
+
+---
+
+# Google Safe Browsing Verification
+
+## Objective
+
+Verify whether the internship website has been reported by Google Safe Browsing.
+
+Google maintains one of the world's largest malicious website databases.
+
+---
+
+## Threat Types
+
+The module checks for
+
+- Malware
+- Phishing
+- Social Engineering
+- Unwanted Software
+
+---
+
+## Output
+
+Safe Browsing Score
+
+0–100
+
+---
+
+## Scoring
+
+Safe
+
+100
+
+Threat Detected
+
+0
+
+---
+
+This score becomes one of the Domain Intelligence signals.
+
+---
+
+# Domain Trust Fusion
+
+## Objective
+
+Combine all Domain Intelligence signals into one unified trust score.
+
+---
+
+## Input Signals
+
+- WHOIS Score
+- DNS Score
+- HTTPS Score
+- Safe Browsing Score
+
+---
+
+## Output
+
+Domain Trust Score
+
+Range
+
+0–100
+
+---
+
+## Current Weight Distribution
+
+WHOIS
+
+30%
+
+DNS
+
+20%
+
+HTTPS
+
+20%
+
+Google Safe Browsing
+
+30%
+
+---
+
+The Domain Trust Score becomes one input to the YESScore Fusion Engine.
