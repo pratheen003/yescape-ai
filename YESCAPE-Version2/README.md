@@ -3,48 +3,47 @@
 
 ---
 
-## Overview
+# Overview
 
-YEScape 2.0 is an AI-driven internship verification framework designed to detect fraudulent internship offers using a multi-signal trust analysis approach.
+YEScape 2.0 is an AI-driven internship verification framework designed to identify fraudulent internship opportunities using a **Multi-Signal Trust Analysis Architecture**.
 
-Unlike traditional scam detectors that rely only on textual analysis, YEScape 2.0 combines Machine Learning with multiple independent verification signals to produce an explainable trust score called **YESScore**.
+Unlike traditional fake job detection systems that rely only on textual classification, YEScape evaluates internship offers using multiple independent verification signals and combines them through a machine learning fusion engine to generate an explainable trust score called **YESScore**.
 
-The framework is being developed as a research-oriented system with the goal of publication, real-world deployment, and future startup commercialization.
+The project is being developed as a research-oriented framework with the objective of publication, real-world deployment, and future product commercialization.
 
 ---
 
 # Project Vision
 
-To build the world's first internship-specific AI verification framework that evaluates an internship offer using multiple independent trust signals instead of relying solely on text classification.
+To build the world's first internship-specific AI verification framework capable of detecting fraudulent internship offers through multiple independent trust signals rather than relying solely on text classification.
 
 ---
 
-# Research Objective
+# Research Objectives
 
-Develop a trustworthy AI framework capable of identifying internship scams by combining:
+Develop a trustworthy AI framework capable of evaluating internship offers by combining:
 
-- Machine Learning based text analysis
-- Company verification
-- Domain intelligence
-- Recruiter identity verification
-- Context analysis
-- Explainable AI
+- Machine Learning based text classification
+- Domain Intelligence
+- Company Verification
+- Recruiter Identity Verification
+- Context Intelligence
+- Multi-Signal Fusion
+- Explainable AI (SHAP)
 
 ---
 
 # Development Roadmap
 
-## ✅ Phase 0
-Research & Documentation
+## ✅ Phase 0 — Research & Documentation
 
-Status:
-Completed
+**Status:** Completed
 
-Deliverables:
+### Deliverables
 
-- Problem Statement
-- Research Gap Analysis
+- Final Problem Statement
 - Novelty Statement
+- Research Gap Analysis
 - Methodology
 - System Architecture
 - Dataset Design
@@ -52,61 +51,113 @@ Deliverables:
 - Signal Design
 - Fusion Model Design
 - Evaluation Protocol
+- Research Documentation
 
 ---
 
-## ⏳ Phase 1
+## ✅ Phase 1 — Dataset Foundation
 
-Dataset Collection &
-Benchmark Dataset Creation
+**Status:** Completed
 
----
+### Deliverables
 
-## ⏳ Phase 2
-
-Machine Learning Text Classification
-
----
-
-## ⏳ Phase 3
-
-Independent Trust Signal Development
-
----
-
-## ⏳ Phase 4
-
-Fusion Engine Development
+- EMSCAD Dataset Review
+- Kaggle Fake Job Postings Review
+- Dataset Cleaning Pipeline
+- Feature Engineering Pipeline
+- Dataset Documentation
+- Processed Dataset v1
+- Processed Dataset v2
+- Cleaning Report
+- Feature Selection Report
 
 ---
 
-## ⏳ Phase 5
+## ✅ Phase 2 — Machine Learning Baseline
 
-Explainable AI using SHAP
+**Status:** Completed
 
----
+### Deliverables
 
-## ⏳ Phase 6
-
-Benchmark Evaluation
-
----
-
-## ⏳ Phase 7
-
-Application Development
-
----
-
-## ⏳ Phase 8
-
-Future Integrations
+- TF-IDF Feature Engineering
+- Fixed Train/Test Split
+- XGBoost Baseline Model
+- Model Evaluation
+- Baseline Metrics
+- Feature Importance Analysis
+- Signal 1 (ML Scam Probability)
+- Baseline Freeze Documentation
 
 ---
 
-## ⏳ Phase 9
+## ⏳ Phase 3 — Independent Trust Signals
 
-Publication & Release
+**Status:** Upcoming
+
+Signals to Develop
+
+- Signal 1 — ML Scam Probability ✅
+- Signal 2 — Domain Intelligence
+- Signal 3 — Recruiter Identity Verification
+- Signal 4 — Company Verification
+- Signal 5 — Context Intelligence
+
+---
+
+## ⏳ Phase 4 — Fusion Engine
+
+Train a machine learning meta-model to combine all five trust signals into a unified **YESScore**.
+
+---
+
+## ⏳ Phase 5 — Explainable AI
+
+Generate human-readable explanations for every prediction using **SHAP**.
+
+---
+
+## ⏳ Phase 6 — Benchmark Evaluation
+
+Evaluate the complete YEScape framework against the baseline text classifier using the Internship Benchmark Dataset.
+
+---
+
+## ⏳ Phase 7 — Product Layer
+
+Develop the complete user-facing application including:
+
+- Dashboard
+- PDF Report Generation
+- History Management
+- Analytics
+- Dark Mode
+- Admin Panel
+
+---
+
+## ⏳ Phase 8 — Future Integrations
+
+Future roadmap includes:
+
+- Chrome Extension
+- WhatsApp Bot
+- Email Scanner
+- Recruiter Portal
+- Placement Cell Dashboard
+- Government Integration
+
+---
+
+## ⏳ Phase 9 — Publication & Release
+
+Final deliverables
+
+- IEEE Research Paper
+- Open Source Repository
+- Internship Benchmark Dataset
+- Technical Documentation
+- Demo Video
+- Research Poster
 
 ---
 
@@ -120,23 +171,23 @@ Publication & Release
 
 - TF-IDF
 - XGBoost
-- DistilBERT (Future)
+- DistilBERT (Future Research)
 
 ## Fusion Model
 
-- Logistic Regression
+- Logistic Regression (Planned)
 
 ## Explainability
 
 - SHAP
 
-## Dataset
+## Datasets
 
 - EMSCAD
 - Kaggle Fake Job Postings
 - Internship Benchmark Dataset (Custom)
 
-## APIs
+## Verification Sources
 
 - Google Safe Browsing API
 - WHOIS
@@ -145,18 +196,53 @@ Publication & Release
 
 ---
 
-# Current Status
+# Current Project Status
 
-Phase 0 Completed
+## Completed
 
-Research foundation established.
+- Phase 0
+- Phase 1
+- Phase 2
 
-Ready to begin Dataset Collection and Benchmark Dataset development.
+Current Progress
+
+- Research Foundation Established
+- Dataset Pipeline Completed
+- Baseline AI Model Trained
+- Signal 1 Completed
+
+## Current Stage
+
+➡️ Beginning **Phase 3 — Independent Trust Signal Development**
+
+---
+
+# Repository Structure
+
+```
+YESCAPE-Version2/
+
+├── datasets/
+├── docs/
+├── models/
+├── research/
+├── architecture/
+├── methodology/
+├── reports/
+├── notebooks/
+└── README.md
+```
+
+---
+
+# Version
+
+**Current Version:** YEScape 2.0
+
+**Development Stage:** Phase 3
 
 ---
 
 # Author
 
-YEScape Research Team
-
-Version 2.0
+**YEScape Research Team**

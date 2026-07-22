@@ -50,3 +50,28 @@ Phase 3.2.3 Completed
 Next
 
 DNS Verification
+
+---
+
+## DNS Module
+
+Purpose
+
+Verify that the domain is technically operational.
+
+Checks
+
+- A Record
+- MX Record
+- NS Record
+- DNS Lookup Success
+
+Output
+
+DNS Trust Score
+
+0–100
+
+Status
+
+Phase 3.2.4 Completed

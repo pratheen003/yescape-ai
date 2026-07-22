@@ -9,6 +9,7 @@ Phase 3.2.3
 
 import whois
 from datetime import datetime, timezone
+from utils.url_utils import URLUtils
 
 
 class WhoisChecker:
@@ -142,7 +143,9 @@ class WhoisChecker:
 
         return min(score, 100)
 
-    def extract_information(self, domain):
+    def extract_information(self, url):
+
+        domain = URLUtils.normalize(url)
 
         info = self.get_domain_information(domain)
 
@@ -208,6 +211,29 @@ if __name__ == "__main__":
 
     checker = WhoisChecker()
 
-    result = checker.extract_information("google.com")
+    test_urls = [
 
-    print(result)
+        "google.com",
+
+        "www.google.com",
+
+        "https://google.com",
+
+        "https://www.google.com",
+
+        "https://careers.google.com/jobs"
+
+    ]
+
+    for url in test_urls:
+
+        print("\nInput :", url)
+
+        result = checker.extract_information(url)
+
+        print(f"Domain        : {result['domain']}")
+        print(f"Registrar     : {result['registrar']}")
+        print(f"Domain Age    : {result['domain_age']} years")
+        print(f"Country       : {result['country']}")
+        print(f"WHOIS Score   : {result['whois_score']}")
+        print("-" * 60)
