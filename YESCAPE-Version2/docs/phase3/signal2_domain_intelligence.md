@@ -261,3 +261,71 @@ Maximum Score
 Maximum DNS Trust Score
 
 100
+
+---
+
+# HTTPS Verification
+
+## Objective
+
+Verify whether the internship website uses a secure HTTPS connection with a valid SSL certificate.
+
+HTTPS verification increases confidence that the organization follows modern security practices.
+
+---
+
+## Checks Performed
+
+### HTTPS Availability
+
+Verify that the website supports HTTPS.
+
+Maximum Score
+
+30
+
+---
+
+### SSL Certificate Validation
+
+Verify that the SSL certificate is valid.
+
+Maximum Score
+
+30
+
+---
+
+### Certificate Expiry
+
+Verify that the certificate has not expired.
+
+Maximum Score
+
+20
+
+---
+
+### Trusted Certificate Authority
+
+Verify that the certificate issuer is a trusted Certificate Authority.
+
+Maximum Score
+
+10
+
+---
+
+### TLS Handshake
+
+Verify that a secure TLS connection can be established.
+
+Maximum Score
+
+10
+
+---
+
+Maximum HTTPS Trust Score
+
+100

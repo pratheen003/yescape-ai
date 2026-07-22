@@ -75,3 +75,29 @@ DNS Trust Score
 Status
 
 Phase 3.2.4 Completed
+
+---
+
+## HTTPS Verification Module
+
+Purpose
+
+Verify that the internship website uses a valid HTTPS connection.
+
+Checks
+
+- HTTPS Availability
+- SSL Certificate
+- Certificate Expiry
+- Trusted Certificate Authority
+- TLS Handshake
+
+Output
+
+HTTPS Trust Score
+
+0–100
+
+Status
+
+Phase 3.2.5 Completed
