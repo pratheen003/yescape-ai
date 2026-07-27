@@ -81,3 +81,16 @@ Instead of requiring every verification signal to perform its own extraction, Si
 - Cleaner verification engine
 - Easier OCR integration
 - Easier AI explanation generation
+
+### Phase 4.2.3
+
+The Offer Parser no longer maintains a hardcoded company list.
+
+Instead, it dynamically reads company names from the centralized Company Registry (`company_registry.csv`) through the Registry Loader.
+
+Benefits:
+
+- Single source of truth
+- Automatic support for newly added companies
+- No duplicated company definitions
+- Easier maintenance

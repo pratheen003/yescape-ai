@@ -11,13 +11,14 @@ Phase 4.2.2
 import re
 
 from schemas.offer_data import OfferData
+from signals.signal3_company.registry_loader import CompanyRegistry
 
 
 class OfferParser:
 
     def __init__(self):
 
-        pass
+        self.registry = CompanyRegistry()
 
     def parse(self, text: str):
 
@@ -81,27 +82,7 @@ class OfferParser:
         # Company
         # --------------------------
 
-        companies = [
-
-            "Google",
-
-            "Microsoft",
-
-            "Amazon",
-
-            "Zoho",
-
-            "Infosys",
-
-            "TCS",
-
-            "IBM",
-
-            "Wipro"
-
-        ]
-
-        for company in companies:
+        for company in self.registry.registry["company"]:
 
             if company.lower() in text.lower():
 
