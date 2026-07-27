@@ -37,3 +37,47 @@ Instead of every verification signal performing its own extraction, Signal 1 con
 - Easier testing
 - Easier AI explanation generation
 - Future-proof for OCR and document uploads
+
+# Offer Parser
+
+## Phase
+
+4.2.2
+
+---
+
+## Purpose
+
+The Offer Parser converts raw internship offer text into a structured OfferData object.
+
+Instead of requiring every verification signal to perform its own extraction, Signal 1 performs extraction once and stores the results inside OfferData.
+
+---
+
+## Current Extraction
+
+- Company
+- Recruiter Email
+- Website
+- Salary
+
+---
+
+## Future Expansion
+
+- Candidate Name
+- Job Role
+- Internship Duration
+- Location
+- Joining Date
+- Offer ID
+- PDF Metadata
+
+---
+
+## Benefits
+
+- Single extraction pipeline
+- Cleaner verification engine
+- Easier OCR integration
+- Easier AI explanation generation
