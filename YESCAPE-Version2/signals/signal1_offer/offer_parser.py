@@ -48,9 +48,13 @@ class OfferParser:
         # Website
         # --------------------------
 
-        website = re.search(
+        # --------------------------
+        # Website
+        # --------------------------
 
-            r"(https?://[^\s]+|www\.[^\s]+|[A-Za-z0-9.-]+\.(com|org|net|jobs|in))",
+        websites = re.findall(
+
+            r"(https?://[^\s]+|www\.[^\s]+|[A-Za-z0-9.-]+\.(?:com|org|net|jobs|in))",
 
             text,
 
@@ -58,9 +62,19 @@ class OfferParser:
 
         )
 
-        if website:
+        if websites:
 
-            offer.website = website.group(0)
+            websites = sorted(
+
+                websites,
+
+                key=len,
+
+                reverse=True
+
+            )
+
+            offer.website = websites[0]
 
         # --------------------------
         # Salary

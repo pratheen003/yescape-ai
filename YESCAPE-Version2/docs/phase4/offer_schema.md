@@ -142,3 +142,38 @@ Each detected field contributes equally to the confidence score.
 - Supports future PDF and image processing.
 - Standardizes extracted offer information.
 - Provides confidence values for AI explanations.
+
+---
+
+# Phase 4.2.6 – Website Selection Improvement
+
+## Objective
+
+The Offer Parser now selects the most specific website when multiple domains are present.
+
+## Previous Behavior
+
+The parser selected the first detected domain.
+
+Example:
+
+- google.com
+- careers.google.com
+
+Result:
+
+google.com
+
+## New Behavior
+
+The parser detects all website candidates and prefers the longest match, which usually corresponds to the most specific subdomain.
+
+Result:
+
+careers.google.com
+
+## Benefits
+
+- Better company verification accuracy.
+- Higher confidence in official career portal detection.
+- Reduced false score reduction.

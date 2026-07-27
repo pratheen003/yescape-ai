@@ -13,11 +13,14 @@ from signals.signal5_context.context_score import ContextTrustScore
 from signals.signal2_domain.domain_score import DomainTrustScore
 from signals.signal3_company.company_score import CompanyScore
 from signals.signal4_recruiter.recruiter_score import RecruiterTrustScore
+from signals.signal1_offer.offer_engine import OfferAnalysisEngine
 
 
 class VerificationEngine:
 
     def __init__(self):
+
+        self.offer = OfferAnalysisEngine()
 
         self.context = ContextTrustScore()
 
@@ -40,8 +43,44 @@ class VerificationEngine:
         # --------------------------------------------------
         # Signal 1
         # --------------------------------------------------
-        # Reserved for Phase 4.2
-        # Offer Letter Analysis Engine
+
+        offer_result = self.offer.analyze(
+        
+            request.offer_text or ""
+        
+        )
+        
+        offer = offer_result["offer_data"]
+
+        signal_results.append(
+
+            SignalResult(
+
+                signal_name="Offer Letter Analysis",
+
+                score=offer_result["confidence"],
+
+                success=True,
+
+                reason="Offer Analysis Completed",
+
+                details={
+
+                    "company": offer.company,
+
+                    "website": offer.website,
+
+                    "email": offer.recruiter_email,
+
+                    "salary": offer.salary,
+
+                    "confidence": offer_result["confidence"]
+
+                }
+
+            )
+
+        )
 
         # --------------------------------------------------
         # Signal 2
@@ -49,7 +88,7 @@ class VerificationEngine:
 
         domain_result = self.domain.calculate(
 
-            request.website or ""
+            offer.website or ""
 
         )
 
@@ -77,9 +116,9 @@ class VerificationEngine:
 
         company_result = self.company.calculate(
 
-            request.company or "",
+            offer.company or "",
 
-            request.website or ""
+            offer.website or ""
 
         )
 
@@ -109,7 +148,7 @@ class VerificationEngine:
 
             request.company or "",
 
-            request.recruiter_email or ""
+            offer.recruiter_email or ""
 
         )
 
