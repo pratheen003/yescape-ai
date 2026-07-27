@@ -27,51 +27,11 @@ class DomainTrustScore:
 
         whois_result = self.whois.extract_information(url)
 
-        if not whois_result["success"]:
-
-            whois_result = {
-
-                "whois_score": 0
-
-            }
-
-        if whois_result is None:
-
-            whois_result = {
-
-                "whois_score": 0
-
-            }
-
         dns_result = self.dns.lookup(url)
-
-        if dns_result is None:
-
-            dns_result = {
-
-                "dns_score": 0
-
-            }
 
         https_result = self.https.check_https(url)
 
-        if https_result is None:
-
-            https_result = {
-
-                "https_score": 0
-
-            }
-
         safe_result = self.safe.check_url(url)
-
-        if safe_result is None:
-
-            safe_result = {
-
-                "safe_browsing_score": 0
-
-            }
 
         final_score = (
 
@@ -97,7 +57,7 @@ class DomainTrustScore:
 
             "safe_browsing_score": safe_result["safe_browsing_score"],
 
-            "domain_trust_score": round(final_score,2)
+            "domain_trust_score": round(final_score, 2)
 
         }
 

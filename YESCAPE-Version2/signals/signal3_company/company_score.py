@@ -58,7 +58,11 @@ class CompanyScore:
 
             "career_score": round(career_score,2),
 
-            "company_trust_score": round(total,2)
+            "company_trust_score": round(total,2),
+
+            "registry_verified": registry is not None,
+
+            "official_domain_match": domain_result["match"]
 
         }
 
