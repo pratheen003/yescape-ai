@@ -10,6 +10,7 @@ Phase 3.2.3
 import whois
 from datetime import datetime, timezone
 from utils.url_utils import URLUtils
+from config.constants import TRUSTED_REGISTRARS
 
 
 class WhoisChecker:
@@ -25,9 +26,7 @@ class WhoisChecker:
 
             return info
 
-        except Exception as e:
-
-            print("WHOIS Error:", e)
+        except Exception:
 
             return None
         
@@ -67,27 +66,9 @@ class WhoisChecker:
         # Trusted Registrar
         # ------------------------
 
-        trusted_registrars = [
-
-            "MarkMonitor",
-
-            "GoDaddy",
-
-            "Namecheap",
-
-            "Google",
-
-            "Cloudflare",
-
-            "Tucows",
-
-            "Network Solutions"
-
-        ]
-
         if registrar:
 
-            if any(r.lower() in registrar.lower() for r in trusted_registrars):
+            if any(r.lower() in registrar.lower() for r in TRUSTED_REGISTRARS):
 
                 score += 20
 
@@ -151,7 +132,25 @@ class WhoisChecker:
 
         if info is None:
 
-            return None
+            return {
+
+                "domain": domain,
+
+                "registrar": None,
+
+                "creation_date": None,
+
+                "expiration_date": None,
+
+                "domain_age": 0,
+
+                "country": None,
+
+                "name_servers": [],
+
+                "whois_score": 0
+
+            }
 
         creation_date = info.creation_date
         expiration_date = info.expiration_date

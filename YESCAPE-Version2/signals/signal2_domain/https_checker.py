@@ -164,7 +164,7 @@ class HTTPSChecker:
 
         except Exception as e:
 
-            print("HTTPS Error:", e)
+            print("HTTPS connection failed.")
 
         return result
 

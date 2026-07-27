@@ -112,7 +112,7 @@ class DNSChecker:
 
         except Exception as e:
 
-            print("DNS Error:", e)
+            print("DNS lookup failed.")
 
         result["dns_score"] = self.calculate_dns_score(
 
