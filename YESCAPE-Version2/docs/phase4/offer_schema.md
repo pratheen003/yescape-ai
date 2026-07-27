@@ -177,3 +177,83 @@ careers.google.com
 - Better company verification accuracy.
 - Higher confidence in official career portal detection.
 - Reduced false score reduction.
+
+---
+
+# Phase 4.2.7 – Signal 1 Integration with Verification Engine
+
+## Objective
+
+Signal 1 is now fully integrated into the YEScape Verification Engine.
+
+Instead of manually providing company, website, recruiter email, and salary, the Verification Engine now receives an OfferData object produced automatically by the Offer Analysis Engine.
+
+---
+
+## Final Signal 1 Pipeline
+
+Offer Letter
+
+↓
+
+Offer Parser
+
+↓
+
+OfferData
+
+↓
+
+Offer Analysis Engine
+
+↓
+
+Validated OfferData
+
+↓
+
+Verification Engine
+
+---
+
+## Extracted Fields
+
+The Offer Analysis Engine currently extracts:
+
+- Company Name
+- Recruiter Email
+- Official Website
+- Salary / Stipend
+
+Each detected field contributes equally to the extraction confidence score.
+
+Confidence =
+
+- Company → 25%
+- Website → 25%
+- Recruiter Email → 25%
+- Salary → 25%
+
+Maximum confidence = 100%.
+
+---
+
+## Verification Engine Integration
+
+Signal 1 now automatically supplies:
+
+- Signal 2 – Domain Verification
+- Signal 3 – Company Verification
+- Signal 4 – Recruiter Verification
+
+Signal 5 continues to analyze the complete offer text.
+
+---
+
+## Benefits
+
+- Eliminates manual data entry.
+- Standardizes extracted information.
+- Supports OCR and PDF processing in later phases.
+- Provides extraction confidence for AI explanations.
+- Creates a reusable OfferData object for future pipeline stages.

@@ -21,15 +21,17 @@ request = VerificationRequest(
     offer_text="""
     Congratulations.
 
-    You have been selected for Google's Internship.
+    You have been selected for Google's Internship Program.
 
-    Please visit our careers portal.
+    Official Careers Website:
+
+    https://careers.google.com
 
     No application fee is required.
 
-    Monthly stipend ₹25,000.
+    Monthly stipend is ₹25000.
 
-    Contact:
+    Recruiter:
 
     hr@google.com
     """
