@@ -94,3 +94,51 @@ Benefits:
 - Automatic support for newly added companies
 - No duplicated company definitions
 - Easier maintenance
+
+---
+
+# Phase 4.2.4 – Offer Analysis Engine
+
+## Objective
+
+The Offer Analysis Engine transforms raw extracted OfferData into a validated and normalized structure.
+
+Unlike the Offer Parser, which only extracts fields, the engine evaluates extraction completeness and generates an extraction confidence score.
+
+## Processing Pipeline
+
+Offer Text
+
+↓
+
+Offer Parser
+
+↓
+
+OfferData
+
+↓
+
+Offer Analysis Engine
+
+↓
+
+Validated OfferData
+
+## Confidence Calculation
+
+The first version calculates confidence using four essential fields:
+
+- Company
+- Website
+- Recruiter Email
+- Salary
+
+Each detected field contributes equally to the confidence score.
+
+## Benefits
+
+- Detects incomplete OCR results.
+- Supports future PDF and image processing.
+- Standardizes extracted offer information.
+- Provides confidence values for AI explanations.
