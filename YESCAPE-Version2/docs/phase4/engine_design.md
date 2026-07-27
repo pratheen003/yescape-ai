@@ -137,3 +137,16 @@ The Recruiter module internally combines:
 - Free Email Detection
 
 The final Recruiter Trust Score is wrapped into a SignalResult and stored inside the VerificationResult.
+
+## Phase 4.1 Completion
+
+The Verification Engine now orchestrates the four completed verification modules:
+
+- Signal 2 – Domain Verification
+- Signal 3 – Company Verification
+- Signal 4 – Recruiter Verification
+- Signal 5 – Context Analysis
+
+Each module executes independently and returns a standardized `SignalResult`.
+
+Signal 1 (Offer Letter Analysis) is intentionally deferred to Phase 4.2 because it requires OCR, PDF parsing, and metadata extraction before it can be integrated cleanly into the engine.
