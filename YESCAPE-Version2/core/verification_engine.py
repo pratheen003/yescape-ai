@@ -10,6 +10,7 @@ from schemas.verification_request import VerificationRequest
 from schemas.verification_result import VerificationResult
 from schemas.signal_result import SignalResult
 from core.signal_factory import SignalFactory
+from core.fusion.score_fusion import ScoreFusion
 
 
 class VerificationEngine:
@@ -27,6 +28,8 @@ class VerificationEngine:
         self.recruiter = signals["recruiter"]
 
         self.context = signals["context"]
+
+        self.fusion = ScoreFusion()
 
     def verify(self, request: VerificationRequest):
 
@@ -176,6 +179,52 @@ class VerificationEngine:
             request.offer_text or ""
 
         )
+
+        # -----------------------------------
+        # Final Fusion
+        # -----------------------------------
+
+        final_score = self.fusion.calculate(
+
+            offer_result["confidence"],
+
+            domain_result["domain_trust_score"],
+
+            company_result["company_trust_score"],
+
+            recruiter_result["recruiter_trust_score"],
+
+            context_result["context_trust_score"]
+
+        )
+
+        risk = self.fusion.classify(final_score)
+
+        confidence = self.fusion.confidence(offer_result)
+
+        reasons = self.fusion.reasons(
+
+            offer_result,
+
+            domain_result,
+
+            company_result,
+
+            recruiter_result,
+
+            context_result
+
+        )
+
+        result.final_score = final_score
+
+        result.risk_level = risk["risk_level"]
+
+        result.risk_color = risk["risk_color"]
+
+        result.confidence = confidence
+
+        result.reasons = reasons
 
         signal_results.append(
 

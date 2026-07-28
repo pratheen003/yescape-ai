@@ -3,7 +3,7 @@ YEScape 2.0
 
 Verification Result Schema
 
-Phase 4.1.3
+Phase 4.3.8
 """
 
 from dataclasses import dataclass, field
@@ -15,15 +15,25 @@ from schemas.signal_result import SignalResult
 @dataclass
 class VerificationResult:
     """
-    Final verification result produced by the engine.
+    Final verification result produced by the Verification Engine.
     """
 
-    overall_score: float = 0
+    # -----------------------------
+    # Final Decision
+    # -----------------------------
 
-    confidence: float = 0
+    final_score: float = 0.0
 
-    verdict: str = ""
+    risk_level: str = ""
 
-    explanation: List[str] = field(default_factory=list)
+    risk_color: str = ""
+
+    confidence: float = 0.0
+
+    reasons: List[str] = field(default_factory=list)
+
+    # -----------------------------
+    # Individual Signal Results
+    # -----------------------------
 
     signals: List[SignalResult] = field(default_factory=list)

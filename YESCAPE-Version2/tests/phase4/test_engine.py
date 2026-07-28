@@ -42,9 +42,37 @@ result = engine.verify(request)
 
 print()
 
-print("Signals")
+print("=" * 60)
+print("YESCAPE FINAL VERIFICATION REPORT")
+print("=" * 60)
 
-print("-" * 40)
+print()
+
+print(f"Final Trust Score : {result.final_score}")
+
+print(f"Risk Level        : {result.risk_level}")
+
+print(f"Confidence        : {result.confidence}%")
+
+print()
+
+print("Reasons")
+
+print("-" * 30)
+
+for reason in result.reasons:
+
+    print("✓", reason)
+
+print()
+
+print("=" * 60)
+
+print("SIGNAL BREAKDOWN")
+
+print("=" * 60)
+
+print()
 
 for signal in result.signals:
 
