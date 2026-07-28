@@ -9,26 +9,24 @@ Phase 4.1.4
 from schemas.verification_request import VerificationRequest
 from schemas.verification_result import VerificationResult
 from schemas.signal_result import SignalResult
-from signals.signal5_context.context_score import ContextTrustScore
-from signals.signal2_domain.domain_score import DomainTrustScore
-from signals.signal3_company.company_score import CompanyScore
-from signals.signal4_recruiter.recruiter_score import RecruiterTrustScore
-from signals.signal1_offer.offer_engine import OfferAnalysisEngine
+from core.signal_factory import SignalFactory
 
 
 class VerificationEngine:
 
     def __init__(self):
 
-        self.offer = OfferAnalysisEngine()
+        signals = SignalFactory.create()
 
-        self.context = ContextTrustScore()
+        self.offer = signals["offer"]
 
-        self.domain = DomainTrustScore()
+        self.domain = signals["domain"]
 
-        self.company = CompanyScore()
+        self.company = signals["company"]
 
-        self.recruiter = RecruiterTrustScore()
+        self.recruiter = signals["recruiter"]
+
+        self.context = signals["context"]
 
     def verify(self, request: VerificationRequest):
 
