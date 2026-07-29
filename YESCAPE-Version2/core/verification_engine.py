@@ -31,6 +31,22 @@ class VerificationEngine:
 
         self.fusion = ScoreFusion()
 
+    def safe_execute(self, function, *args):
+        """
+        Execute a signal safely.
+
+        Returns:
+            (success, result)
+        """
+
+        try:
+
+            return True, function(*args)
+
+        except Exception as e:
+
+            return False, str(e)
+
     def verify(self, request: VerificationRequest):
 
         """
@@ -45,53 +61,105 @@ class VerificationEngine:
         # Signal 1
         # --------------------------------------------------
 
-        offer_result = self.offer.analyze(
-        
+        offer_success, offer_result = self.safe_execute(
+
+            self.offer.analyze,
+
             request.offer_text or ""
-        
+
         )
-        
-        offer = offer_result["offer_data"]
 
-        signal_results.append(
+        if not offer_success:
 
-            SignalResult(
+            offer_result = {
 
-                signal_name="Offer Letter Analysis",
+                "confidence": 0,
 
-                score=offer_result["confidence"],
+                "offer_data": None
 
-                success=True,
+            }
 
-                reason="Offer Analysis Completed",
+            offer = None
 
-                details={
+        else:
 
-                    "company": offer.company,
+            offer = offer_result["offer_data"]
 
-                    "website": offer.website,
+        if offer_success:
 
-                    "email": offer.recruiter_email,
+            signal_results.append(
 
-                    "salary": offer.salary,
+                SignalResult(
 
-                    "confidence": offer_result["confidence"]
+                    signal_name="Offer Letter Analysis",
 
-                }
+                    score=offer_result["confidence"],
+
+                    success=True,
+
+                    reason="Offer Analysis Completed",
+
+                    details={
+
+                        "company": offer.company,
+
+                        "website": offer.website,
+
+                        "email": offer.recruiter_email,
+
+                        "salary": offer.salary,
+
+                        "confidence": offer_result["confidence"]
+
+                    }
+
+                )
 
             )
 
-        )
+        else:
+
+            signal_results.append(
+
+                SignalResult(
+
+                    signal_name="Offer Letter Analysis",
+
+                    score=0,
+
+                    success=False,
+
+                    reason="Offer Analysis Failed",
+
+                    details={
+
+                        "error": "Offer Parser Exception"
+
+                    }
+
+                )
+
+            )
 
         # --------------------------------------------------
         # Signal 2
         # --------------------------------------------------
 
-        domain_result = self.domain.calculate(
+        domain_success, domain_result = self.safe_execute(
 
-            offer.website or ""
+            self.domain.calculate,
+
+            offer.website if offer else ""
 
         )
+
+        if not domain_success:
+
+            domain_result = {
+
+                "domain_trust_score": 0
+
+            }
 
         signal_results.append(
 
@@ -101,9 +169,13 @@ class VerificationEngine:
 
                 score=domain_result["domain_trust_score"],
 
-                success=True,
+                success=domain_success,
 
-                reason="Domain Verification Completed",
+                reason=(
+                    "Domain Verification Completed"
+                    if domain_success
+                    else "Domain Verification Failed"
+                ),
 
                 details=domain_result
 
@@ -115,13 +187,23 @@ class VerificationEngine:
         # Signal 3
         # --------------------------------------------------
 
-        company_result = self.company.calculate(
+        company_success, company_result = self.safe_execute(
 
-            offer.company or "",
+            self.company.calculate,
 
-            offer.website or ""
+            offer.company if offer else "",
+
+            offer.website if offer else ""
 
         )
+
+        if not company_success:
+
+            company_result = {
+
+                "company_trust_score": 0
+
+            }
 
         signal_results.append(
 
@@ -131,9 +213,13 @@ class VerificationEngine:
 
                 score=company_result["company_trust_score"],
 
-                success=True,
+                success=company_success,
 
-                reason="Company Verification Completed",
+                reason=(
+                    "Company Verification Completed"
+                    if company_success
+                    else "Company Verification Failed"
+                ),
 
                 details=company_result
 
@@ -145,13 +231,23 @@ class VerificationEngine:
         # Signal 4
         # --------------------------------------------------
 
-        recruiter_result = self.recruiter.calculate(
+        recruiter_success, recruiter_result = self.safe_execute(
 
-            request.company or "",
+            self.recruiter.calculate,
 
-            offer.recruiter_email or ""
+            offer.company if offer else "",
+
+            offer.recruiter_email if offer else ""
 
         )
+
+        if not recruiter_success:
+
+            recruiter_result = {
+
+                "recruiter_trust_score": 0
+
+            }
 
         signal_results.append(
 
@@ -161,9 +257,13 @@ class VerificationEngine:
 
                 score=recruiter_result["recruiter_trust_score"],
 
-                success=True,
+                success=recruiter_success,
 
-                reason="Recruiter Verification Completed",
+                reason=(
+                    "Recruiter Verification Completed"
+                    if recruiter_success
+                    else "Recruiter Verification Failed"
+                ),
 
                 details=recruiter_result
 
@@ -174,11 +274,21 @@ class VerificationEngine:
         # Signal 5
         # --------------------------------------------------
 
-        context_result = self.context.calculate(
+        context_success, context_result = self.safe_execute(
+
+            self.context.calculate,
 
             request.offer_text or ""
 
         )
+
+        if not context_success:
+
+            context_result = {
+
+                "context_trust_score": 0
+
+            }
 
         # -----------------------------------
         # Final Fusion

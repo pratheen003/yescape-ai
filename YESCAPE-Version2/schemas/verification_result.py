@@ -30,6 +30,8 @@ class VerificationResult:
 
     confidence: float = 0.0
 
+    execution_time: float = 0
+
     reasons: List[str] = field(default_factory=list)
 
     # -----------------------------
